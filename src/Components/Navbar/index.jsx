@@ -9,6 +9,9 @@ function Navbar() {
         <Link to="/">
           <button>Home</button>
         </Link>
+        <Link to='/bands'>
+          <button>Bands</button>
+        </Link>
       </div>
       {isLoggedIn ? (
         <div>

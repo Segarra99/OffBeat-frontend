@@ -13,6 +13,7 @@ import ProfilePage from "./Pages/Profile";
 import EditProfilePage from "./Pages/EditProfile";
 import SignupPage from "./Pages/Signup";
 import LoginPage from "./Pages/Login";
+import IsPrivate from "./Components/isPrivate";
 
 function App() {
   return (
@@ -20,13 +21,62 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/bands" element={<BandListPage />} />
-        <Route path="/bands/create" element={<CreateBandPage />} />
-        <Route path="/bands/edit" element={<EditBandPage />} />
-        <Route path="/profile/:userId" element={<ProfilePage />} />
-        <Route path="/profile/edit" element={<EditProfilePage />} />
+        <Route
+          path="/signup"
+          element={
+            <isAnon>
+              <SignupPage />
+            </isAnon>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <isAnon>
+              <LoginPage />
+            </isAnon>
+          }
+        />
+        <Route
+          path="/bands"
+          element={
+            <isPrivate>
+              <BandListPage />
+            </isPrivate>
+          }
+        />
+        <Route
+          path="/bands/create"
+          element={
+            <isPrivate>
+              <CreateBandPage />
+            </isPrivate>
+          }
+        />
+        <Route
+          path="/bands/edit"
+          element={
+            <IsPrivate>
+              <EditBandPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/profile/:userId"
+          element={
+            <IsPrivate>
+              <ProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <IsPrivate>
+              <EditProfilePage />
+            </IsPrivate>
+          }
+        />
       </Routes>
     </div>
   );
