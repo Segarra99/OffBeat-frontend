@@ -39,9 +39,9 @@ function App() {
         <Route
           path="/bands"
           element={
-            <IsPrivate>
+            //<IsPrivate>
               <BandListPage />
-            </IsPrivate>
+            //</IsPrivate>
           }
         />
         <Route

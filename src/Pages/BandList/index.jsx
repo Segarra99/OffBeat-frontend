@@ -10,7 +10,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 
-const API_URL = "http://localhost:5005";
+const API_URL = "http://localhost:5005/api";
 
 function BandListPage() {
   const [bands, setBands] = useState([]);
