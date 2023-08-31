@@ -9,16 +9,31 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
 
-const API_URL = "http://localhost:5005/api";
+const API_URL = "http://localhost:5005";
 
 function BandListPage() {
   const [bands, setBands] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${API_URL}/bands`)
+      .get(`${API_URL}/api/bands`)
+      .then((response) => setArtists(response.data))
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/artists`)
       .then((response) => setBands(response.data))
+      console.log(response.data)
       .catch((error) => console.log(error));
   }, []);
 
@@ -49,6 +64,38 @@ function BandListPage() {
           </div>
         );
       })}
+
+<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        {artists.map((artist)=>{
+          return (
+            <div>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Avatar" src={artist.img} />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Brunch this weekend?"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: 'inline' }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                    </Typography>
+                    {artist.description}
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider variant="inset" component="li" />
+            </div>
+            );
+          })}
+          </List>
+
+
     </div>
   );
 }
