@@ -25,15 +25,14 @@ function BandListPage() {
   useEffect(() => {
     axios
       .get(`${API_URL}/api/bands`)
-      .then((response) => setArtists(response.data))
+      .then((response) => setBands(response.data))
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     axios
       .get(`${API_URL}/api/artists`)
-      .then((response) => setBands(response.data))
-      console.log(response.data)
+      .then((response) => setArtists(response.data))
       .catch((error) => console.log(error));
   }, []);
 
@@ -65,16 +64,16 @@ function BandListPage() {
         );
       })}
 
-<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.black' }}>
         {artists.map((artist)=>{
           return (
-            <div>
+            <div key={artist._id}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar alt="Avatar" src={artist.img} />
               </ListItemAvatar>
               <ListItemText
-                primary="Brunch this weekend?"
+                primary = {`${artist.firstName} ${artist.lastName}`}
                 secondary={
                   <React.Fragment>
                     <Typography
@@ -89,7 +88,7 @@ function BandListPage() {
                 }
               />
             </ListItem>
-            <Divider variant="inset" component="li" />
+            <Divider variant="inset" component="li" sx={{bgcolor: 'white'}}/>
             </div>
             );
           })}
