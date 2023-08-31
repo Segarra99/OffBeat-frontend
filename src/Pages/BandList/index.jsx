@@ -8,19 +8,25 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
+import { CardActionArea, ListItemButton } from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import Switch from "@mui/material/Switch";
+import { styled } from "@mui/material/styles";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 const API_URL = "http://localhost:5005";
 
 function BandListPage() {
   const [bands, setBands] = useState([]);
   const [artists, setArtists] = useState([]);
+  const [isListSwitched, setIsListSwitched] = useState(false);
 
   useEffect(() => {
     axios
@@ -36,65 +42,92 @@ function BandListPage() {
       .catch((error) => console.log(error));
   }, []);
 
+  const handleSwitchChange = () => {
+    setIsListSwitched(!isListSwitched);
+  };
+
   return (
     <div>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch checked={isListSwitched} onChange={handleSwitchChange} />
+          }
+          label="Switch List"
+          labelPlacement="start"
+          startIcon={<MusicNoteIcon />}
+          />
+      </FormGroup>
       <Link to="/bands/create">Form a Band</Link>
-      {bands.map((band) => {
-        return (
-          <div key={band._id}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardActionArea component={Link} to={`/bands/${band._id}`}>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={band.img}
-                  alt="band image"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {band.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {band.description}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </div>
-        );
-      })}
 
-<List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.black' }}>
-        {artists.map((artist)=>{
-          return (
+      {isListSwitched ? (
+        <List
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.black" }}
+        >
+          {artists.map((artist) => (
             <div key={artist._id}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="Avatar" src={artist.img} />
-              </ListItemAvatar>
-              <ListItemText
-                primary = {`${artist.firstName} ${artist.lastName}`}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                    </Typography>
-                    {artist.description}
-                  </React.Fragment>
-                }
+              <ListItemButton
+                component="a"
+                href={`/profile/${artist._id}`}
+                alignItems="flex-start"
+              >
+                <ListItemAvatar>
+                  <Avatar alt="Avatar" src={artist.img} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${artist.firstName} ${artist.lastName}`}
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="white"
+                      >
+                        {artist.instruments.map((instrument) => (
+                          <React.Fragment key={instrument}>
+                            {instrument}
+                          </React.Fragment>
+                        ))}
+                      </Typography>
+                    </React.Fragment>
+                  }
+                />
+              </ListItemButton>
+              <Divider
+                variant="inset"
+                component="li"
+                sx={{ bgcolor: "white" }}
               />
-            </ListItem>
-            <Divider variant="inset" component="li" sx={{bgcolor: 'white'}}/>
             </div>
-            );
-          })}
-          </List>
-
-
+          ))}
+        </List>
+      ) : (
+        <div>
+          {bands.map((band) => (
+            <div key={band._id}>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardActionArea component={Link} to={`/bands/${band._id}`}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={band.img}
+                    alt="band image"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {band.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {band.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
