@@ -1,8 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import isAnon from "./Components/IsAnon";
-import isPrivate from "./Components/isPrivate";
+import IsAnon from "./Components/IsAnon";
+import IsPrivate from "./Components/IsPrivate";
 
 /* Import all the pages */
 import HomePage from "./Pages/Home";
@@ -13,7 +13,6 @@ import ProfilePage from "./Pages/Profile";
 import EditProfilePage from "./Pages/EditProfile";
 import SignupPage from "./Pages/Signup";
 import LoginPage from "./Pages/Login";
-import IsPrivate from "./Components/isPrivate";
 
 function App() {
   return (
@@ -24,33 +23,33 @@ function App() {
         <Route
           path="/signup"
           element={
-            <isAnon>
+            <IsAnon>
               <SignupPage />
-            </isAnon>
+            </IsAnon>
           }
         />
         <Route
           path="/login"
           element={
-            <isAnon>
+            <IsAnon>
               <LoginPage />
-            </isAnon>
+            </IsAnon>
           }
         />
         <Route
           path="/bands"
           element={
-            <isPrivate>
+            <IsPrivate>
               <BandListPage />
-            </isPrivate>
+            </IsPrivate>
           }
         />
         <Route
           path="/bands/create"
           element={
-            <isPrivate>
+            <IsPrivate>
               <CreateBandPage />
-            </isPrivate>
+            </IsPrivate>
           }
         />
         <Route
