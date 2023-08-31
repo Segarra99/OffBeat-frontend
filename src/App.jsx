@@ -13,6 +13,8 @@ import ProfilePage from "./Pages/Profile";
 import EditProfilePage from "./Pages/EditProfile";
 import SignupPage from "./Pages/Signup";
 import LoginPage from "./Pages/Login";
+import ContactsPage from "./Pages/Contacts";
+
 
 function App() {
   return (
@@ -74,6 +76,12 @@ function App() {
             <IsPrivate>
               <EditProfilePage />
             </IsPrivate>
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+              <ContactsPage/>
           }
         />
       </Routes>

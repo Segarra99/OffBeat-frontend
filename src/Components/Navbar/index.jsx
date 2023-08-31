@@ -66,8 +66,18 @@ function Navbar() {
         </Link>
       </div>
       <div>
+        <Link to="/about">
+          <button>About</button>
+        </Link>
+      </div>
+      <div>
         <Link to="/bands">
           <button>Bands</button>
+        </Link>
+      </div>
+      <div>
+        <Link to="/contacts">
+          <button>Contacts</button>
         </Link>
       </div>
       {isLoggedIn ? (
