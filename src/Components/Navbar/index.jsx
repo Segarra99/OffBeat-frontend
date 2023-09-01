@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/auth.context";
 import * as React from "react";
@@ -30,13 +30,12 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
-const pages = ["Home", "About", "Bands", "Contacts"];
-
-
 function Navbar() {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -78,6 +77,14 @@ function Navbar() {
     alignItems: "center",
     justifyContent: "center",
   }));
+
+  const handleSearch = () => {
+    // Set the searchQuery state
+    setSearchQuery(searchQuery);
+  
+    // Navigate to the /bands route with the searchQuery as a URL parameter
+    navigate(`/bands?search=${searchQuery}`);
+  };
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
@@ -143,11 +150,12 @@ function Navbar() {
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       sx={{
         width: "100vw",
         marginLeft: "auto",
         marginRight: "auto",
+        marginBottom: "60px",
         bgcolor: "Black",
       }}
     >
@@ -200,41 +208,38 @@ function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-
-            <Link to="/">
               <Button
+                component={Link}
+                to="/"
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 2, color: "black", display: "block", width:'100px' }}
               >
                 Home
               </Button>
-            </Link>
-            <Link to="/about">
               <Button
+                component={Link}
+                to="/about"
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 2, color: "black", display: "block", width:'100px'}}
               >
                 About
               </Button>
-            </Link>
-            <Link to="/bands">
               <Button
+                component={Link}
+                to="/bands"
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 2, color: "black", display: "block", width:'100px' }}
               >
                 Bands
               </Button>
-            </Link>
-            <Link to="/contacts">
               <Button
+                component={Link}
+                to="/contacts"
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "black", display: "block" }}
+                sx={{ my: 2, color: "black", display: "block", width:'100px' }}
               >
                 Contacts
               </Button>
-            </Link>
-
-
             </Menu>
           </Box>
           <GraphicEqIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -254,41 +259,41 @@ function Navbar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            OffBeat
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link to="/">
               <Button
+              component={Link}
+              to="/"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 Home
               </Button>
-            </Link>
-            <Link to="/about">
               <Button
+                component={Link}
+                to="/about"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 About
               </Button>
-            </Link>
-            <Link to="/bands">
               <Button
+                component={Link}
+                to="/bands"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 Bands
               </Button>
-            </Link>
-            <Link to="/contacts">
               <Button
+                component={Link}
+                to="/contacts"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 Contacts
               </Button>
-            </Link>
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -297,6 +302,14 @@ function Navbar() {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onBlur={handleSearch}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch(); // This line triggers the search on pressing Enter.
+                }
+              }}
             />
           </Search>
           <FormGroup>
@@ -309,7 +322,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {isLoggedIn ? <Avatar src= '\chicomacareu.jpg'/> : <Avatar src="/img" />}
+                {isLoggedIn ? <Avatar src= {user.img}/> : <Avatar src="/img" />}
               </IconButton>
             </Tooltip>
             <Menu
@@ -333,26 +346,28 @@ function Navbar() {
                   <MenuItem
                     onClick={handleCloseUserMenu}
                   >
-                    <Link
+                    <Button
+                      
                       to="/profile"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <Typography textAlign="center">
                         Profile
                       </Typography>
-                    </Link>
+                    </Button>
                   </MenuItem>
                   <MenuItem
                     onClick={handleCloseUserMenu}
                   >
-                    <Link
+                    <Button
+                      component={Link}
                       onClick={logOutUser}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <Typography textAlign="center">
                         Log out
                       </Typography>
-                    </Link>
+                    </Button>
                   </MenuItem>
                 </>
               ) : (
@@ -360,26 +375,28 @@ function Navbar() {
                   <MenuItem
                     onClick={handleCloseUserMenu}
                   >
-                    <Link
+                    <Button
+                      component={Link}
                       to="/signup"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <Typography textAlign="center">
                         Sign Up
                       </Typography>
-                    </Link>
+                    </Button>
                   </MenuItem>
                   <MenuItem
                     onClick={handleCloseUserMenu}
                   >
-                    <Link
+                    <Button
+                      component={Link}
                       to="/login"
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <Typography textAlign="center">
                         Login
                       </Typography>
-                    </Link>
+                    </Button>
                   </MenuItem>
                 </>
               )}

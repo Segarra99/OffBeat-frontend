@@ -2,7 +2,7 @@ import React from 'react'
 
 function AboutPage() {
   return (
-    <div>AboutPage</div>
+    <div style={{ paddingTop: '72px' }}>AboutPage</div>
   )
 }
 
