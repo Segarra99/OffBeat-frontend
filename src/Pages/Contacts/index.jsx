@@ -2,7 +2,7 @@ import React from 'react';
 
 function ContactsPage() {
   return (
-    <div>
+    <div style={{ paddingTop: '72px' }}>
       <br />
       <h1>Contacts</h1>
       <br /> 

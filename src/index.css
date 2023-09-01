@@ -29,6 +29,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+  background-image: url('./public/background3.jpg');
+  background-position: 0px -80px;
+  background-size: cover;
+  scrollbar-width: none;
 }
 
 h1 {
@@ -47,4 +51,12 @@ h1 {
   button {
     background-color: #f9f9f9;
   }
+}
+
+::-webkit-scrollbar {
+  width: 0em; /* Adjust the width to your preference */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Hide the thumb */
 }
