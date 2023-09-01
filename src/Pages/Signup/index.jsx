@@ -5,19 +5,22 @@ import axios from "axios";
 
 
 //import mui
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
+import Paper from '@mui/material/Paper';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import BasicInfo from './basicInfo';
+import ProfileInfo from './profileInfo';
+import RecapInfo from './recapInfo';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const API_URL = 'http://localhost:5005';
 
@@ -29,16 +32,17 @@ function SignupPage() {
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-
-
+  const [nationality, setNationality] = useState('');
+  const [instruments, setInstruments] = useState('')
+  const [genres, setGenres] = useState('');
   const [errorMessage, setErrorMessage] = useState(undefined);
-
   const navigate = useNavigate();
 
+  /* SUBMIT FUNCTION */
   const handleSubmit = (e) => {
       e.preventDefault();
 
-      const requestBody = {username, firstName, lastName, email, password};
+      const requestBody = {username, firstName, lastName, email, password, nationality, genres};
 
       axios.post(`${API_URL}/auth/signup`, requestBody)
       .then((response)=>{
@@ -51,12 +55,12 @@ function SignupPage() {
   }
 
 
-  function Copyright(props) {
+  function Copyright() {
     return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      <Typography variant="body2" color="text.secondary" align="center">
         {'Copyright © '}
         <Link color="inherit" href="https://mui.com/">
-          Your Website
+          OffBeat WebApp
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}
@@ -64,131 +68,137 @@ function SignupPage() {
     );
   }
   
+  /* FORM STEPS */
+  const steps = ['Basic information', 'Account details', 'Review your information'];
 
+  /* function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <ProfileInfo/>;
+      case 1:
+        return <BasicInfo/>;
+      case 2:
+        return <RecapInfo/>;
+      default:
+        throw new Error('Unknown step');
+    }
+  } */
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <ProfileInfo
+            username={username}
+            email={email}
+            password={password}
+            setUsername={setUsername}
+            setEmail={setEmail}
+            setPassword={setPassword}
+          />
+        );
+      case 1:
+        return (
+          <BasicInfo
+            firstName={firstName}
+            lastName={lastName}
+            nationality={nationality}
+            instruments={instruments}
+            genres={genres}
+            setFirstName={setFirstName}
+            setLastName={setLastName}
+            setNationality={setNationality}
+            setInstruments={setInstruments}
+            setGenres={setGenres}
+          />
+        );
+      case 2:
+        return (
+          <RecapInfo
+            username={username}
+            email={email}
+            firstName={firstName}
+            lastName={lastName}
+            nationality={nationality}
+            instruments={instruments}
+            genres={genres}
+          />
+        );
+      default:
+        throw new Error('Unknown step');
+    }
+  };
+
+
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  /* FUNCTIONS TO ADVANCE IN FORM OR GO BACK */
+  const handleNext = () => {
+    setActiveStep(activeStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
 
 
   return (
-    <div>
-      <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Create account
-            </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <div>
-                <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="firstName"
-                label="First Name"
-                type="text"
-                id="firstName"
-                onChange={(e) => setFirstName(e.target.value)}
-                autoComplete="current-firstName"
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="lastName"
-                label="Last Name"
-                type="text"
-                id="lastName"
-                onChange={(e) => setLastName(e.target.value)}
-                autoComplete="current-lastName"
-              />
-              </div>
-              
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="username"
-                label="Username"
-                type="text"
-                id="username"
-                onChange={(e) => setUsername(e.target.value)}
-                autoComplete="current-username"
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Create
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                </Grid>
-                <Grid item>
-                  <Link href="/login" variant="body2">
-                    {"Already have an account? Login"}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <AppBar
+        position="absolute"
+        color="default"
+        elevation={0}
+        sx={{
+          position: 'relative',
+          borderBottom: (t) => `1px solid ${t.palette.divider}`,
+        }}
+      >
+      </AppBar>
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <Typography component="h1" variant="h4" align="center">
+            Sign Up
+          </Typography>
+          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography variant="h5" gutterBottom>
+                All set!
+              </Typography>
+              <Typography variant="subtitle1">
+                We are glad you decided to join our community. Your account was set and from now on, feel free to roam in the app and connect with other artists and bands.
+              </Typography>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {getStepContent(activeStep)}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                {activeStep !== 0 && (
+                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                    Back
+                  </Button>
+                )}
+                <Button
+                  type={activeStep === steps.length - 1 ? 'submit' : 'button'}
+                  variant="contained"
+                  onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  {activeStep === steps.length - 1 ? 'Complete signing up' : 'Next'}
+                </Button>
+              </Box>
+            </React.Fragment>
+          )} 
+        </Paper>
+        <Copyright />
+      </Container>
+    </React.Fragment>
   )
 }
 
