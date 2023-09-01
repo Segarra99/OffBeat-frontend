@@ -21,10 +21,15 @@ import BasicInfo from './basicInfo';
 import ProfileInfo from './profileInfo';
 import RecapInfo from './recapInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
+
 
 const API_URL = 'http://localhost:5005';
 
 const defaultTheme = createTheme();
+
+const genreEx = ['rock', 'jazz', 'blues', 'reggae']
+const instrumentsEx = ['acoustic guitar', 'electric guitar', 'bass', 'drums', 'djembe', 'piano', 'xylophone', 'triangle']
 
 function SignupPage() {
   const [email, setEmail] = useState('');
@@ -33,8 +38,8 @@ function SignupPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [nationality, setNationality] = useState('');
-  const [instruments, setInstruments] = useState('')
-  const [genres, setGenres] = useState('');
+  const [instruments, setInstruments] = useState([])
+  const [genres, setGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState(undefined);
   const navigate = useNavigate();
 
@@ -109,6 +114,8 @@ function SignupPage() {
             setNationality={setNationality}
             setInstruments={setInstruments}
             setGenres={setGenres}
+            genreEx={genreEx}
+            instrumentsEx={instrumentsEx}
           />
         );
       case 2:

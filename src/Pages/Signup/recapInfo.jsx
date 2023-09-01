@@ -10,34 +10,33 @@ import Grid from '@mui/material/Grid';
 function RecapInfo(props) {
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Account Information
       </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+      <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid item container direction="column" xs={24} sm={12}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Basic information
-          </Typography>
-          <Typography gutterBottom>{props.username}</Typography>
-          <Typography gutterBottom>{props.email}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-            Account Details
+            Confirm Your Details
           </Typography>
           <Grid container>
               <React.Fragment>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{props.firstName}</Typography>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Name: {props.firstName} {props.lastName}</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{props.nationality}</Typography>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Username: {props.username}</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{props.instruments}</Typography>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Email: {props.email}</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{props.genres}</Typography>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Nationality: {props.nationality}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Instruments: {props.instruments}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Music Genres: {props.genres}</Typography>
                 </Grid>
               </React.Fragment>
           </Grid>

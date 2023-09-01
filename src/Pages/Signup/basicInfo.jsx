@@ -4,10 +4,12 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-
+import { OutlinedInput, InputLabel, MenuItem, Select, FormControl, Stack, Chip } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckIcon from "@mui/icons-material/Check";
 
 function BasicInfo(props) {
-  const {firstName, setFirstName, lastName, setLastName, nationality, setNationality,instruments, setInstruments , genres, setGenres} = props;
+  const {firstName, setFirstName, lastName, setLastName, nationality, setNationality,instruments, setInstruments , genres, setGenres, genreEx, instrumentsEx} = props;
 
   return (
     <React.Fragment>
@@ -55,30 +57,84 @@ function BasicInfo(props) {
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="instruments"
-            label="Instruments"
-            name="instruments"
-            fullWidth
-            autoComplete="instruments"
-            variant="standard"
-            value={instruments}
-            onChange = {(e) => setInstruments(e.target.value)}
-          />
+        <InputLabel>Instruments selection</InputLabel>
+        <Select
+          multiple
+          value={instruments}
+          onChange={(e) => setInstruments(e.target.value)}
+          input={<OutlinedInput label="Multiple Select" />}
+          renderValue={(selected) => (
+            <Stack gap={1} direction="row" flexWrap="wrap">
+              {selected.map((value) => (
+                <Chip
+                  key={value}
+                  label={value}
+                  onDelete={() =>
+                    setInstruments(
+                      instruments.filter((item) => item !== value)
+                    )
+                  }
+                  deleteIcon={
+                    <CancelIcon
+                      onMouseDown={(event) => event.stopPropagation()}
+                    />
+                  }
+                />
+              ))}
+            </Stack>
+          )}
+        >
+          {instrumentsEx.map((example) => (
+            <MenuItem
+              key={example}
+              value={example}
+              sx={{ justifyContent: "space-between" }}
+            >
+              {example}
+              {instruments.includes(example) ? <CheckIcon color="info" /> : null}
+            </MenuItem>
+          ))}
+        </Select>
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="genres"
-            label="Genres"
-            name="genres"
-            fullWidth
-            autoComplete="genres"
-            variant="standard"
-            value={genres}
-            onChange = {(e) => setGenres(e.target.value)}
-          />
+        <InputLabel>Genre selection</InputLabel>
+        <Select
+          multiple
+          value={genres}
+          onChange={(e) => setGenres(e.target.value)}
+          input={<OutlinedInput label="Multiple Select" />}
+          renderValue={(selected) => (
+            <Stack gap={1} direction="row" flexWrap="wrap">
+              {selected.map((value) => (
+                <Chip
+                  key={value}
+                  label={value}
+                  onDelete={() =>
+                    setGenres(
+                      genres.filter((item) => item !== value)
+                    )
+                  }
+                  deleteIcon={
+                    <CancelIcon
+                      onMouseDown={(event) => event.stopPropagation()}
+                    />
+                  }
+                />
+              ))}
+            </Stack>
+          )}
+        >
+          {genreEx.map((example) => (
+            <MenuItem
+              key={example}
+              value={example}
+              sx={{ justifyContent: "space-between" }}
+            >
+              {example}
+              {genres.includes(example) ? <CheckIcon color="info" /> : null}
+            </MenuItem>
+          ))}
+        </Select>
         </Grid>
       </Grid>
     </React.Fragment>
