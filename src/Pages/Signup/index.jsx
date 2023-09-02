@@ -56,6 +56,7 @@ function SignupPage() {
       .catch((error) =>{
           const errorDescription = error.response.data.message;
           setErrorMessage(errorDescription);
+          console.log(errorMessage);
       })
   }
 

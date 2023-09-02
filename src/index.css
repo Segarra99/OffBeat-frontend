@@ -29,7 +29,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-  background-image: url('./public/background3.jpg');
+  overflow-y: hidden;
+  background-image: url('../public/images/background3.jpg');
   background-position: 0px -80px;
   background-size: cover;
   scrollbar-width: none;
@@ -59,4 +60,22 @@ h1 {
 
 ::-webkit-scrollbar-thumb {
   background-color: transparent; /* Hide the thumb */
+}
+
+.list-container{
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  overflow-x: hidden;
+}
+
+.list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height:  800px;
+  overflow: auto;
+  width: 100vw;
 }

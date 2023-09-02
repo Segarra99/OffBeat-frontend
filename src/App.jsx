@@ -14,6 +14,7 @@ import EditProfilePage from "./Pages/EditProfile";
 import SignupPage from "./Pages/Signup";
 import LoginPage from "./Pages/Login";
 import ContactsPage from "./Pages/Contacts";
+import BandDetailsPage from "./Pages/BandDetails";
 
 
 function App() {
@@ -43,6 +44,14 @@ function App() {
           element={
             <IsPrivate>
               <BandListPage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/bands/:bandId"
+          element={
+            <IsPrivate>
+              <BandDetailsPage />
             </IsPrivate>
           }
         />

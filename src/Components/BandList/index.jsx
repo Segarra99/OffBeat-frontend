@@ -27,7 +27,7 @@ function BandList() {
   const [bands, setBands] = useState([]);
   const [artists, setArtists] = useState([]);
   const [isListSwitched, setIsListSwitched] = useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredBands, setFilteredBands] = useState([]);
 
   const handleSearch = () => {
@@ -69,7 +69,7 @@ function BandList() {
   };
 
   return (
-    <div style={{ paddingTop: '72px' }}>
+    <div className="list-container" style={{ paddingTop: "72px" }}>
       <FormGroup>
         <FormControlLabel
           control={
@@ -77,14 +77,11 @@ function BandList() {
           }
           label="Switch List"
           labelPlacement="start"
-          />
+        />
       </FormGroup>
       <Link to="/bands/create">Form a Band</Link>
-
       {isListSwitched ? (
-        <List
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.black" }}
-        >
+        <List sx={{ width: "100%", maxWidth: 360 }}>
           {artists.map((artist) => (
             <div key={artist._id}>
               <ListItemButton
@@ -124,14 +121,14 @@ function BandList() {
           ))}
         </List>
       ) : (
-        <div>
+        <div className="list">
           {bands.map((band) => (
             <div key={band._id}>
-              <Card sx={{ maxWidth: 345 }}>
+              <Card sx={{ width: 900, mb: 20}}>
                 <CardActionArea component={Link} to={`/bands/${band._id}`}>
                   <CardMedia
                     component="img"
-                    height="140"
+                    height="500"
                     image={band.img}
                     alt="band image"
                   />
