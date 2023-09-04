@@ -347,8 +347,8 @@ function Navbar() {
                     onClick={handleCloseUserMenu}
                   >
                     <Button
-                      
-                      to="/profile"
+                      component={Link}
+                      to={`/profile/${user._id}`}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <Typography textAlign="center">
