@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../Context/auth.context";
 import axios from "axios";
 
 /* Material UI imports */
@@ -12,6 +13,7 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 const API_URL = "http://localhost:5005";
 
@@ -21,28 +23,65 @@ function BandDetailsPage() {
   const [value, setValue] = React.useState(0);
   const [hidden, setHidden] = useState(true);
 
+  // Create review
+  const [content, setContent] = useState('');
+  const [img, setImg] = useState('');
+  const [user, setUser] = useState('');
+  const [rating, setRating] = useState(0);
+  const {user: currentUser} = useContext(AuthContext);
+
   useEffect(() => {
     axios
       .get(`${API_URL}/api/bands/${bandId}`)
       .then((response) => setBand(response.data))
       .catch((error) => console.log(error));
   }, []);
+  
+  useEffect(()=>{
+    setUser(currentUser._id);
+  })
+
+  let authorization = false;
+  if(band.founder._id === currentUser._id){
+    authorization = true;
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const requestBody = {content, img, user, rating};
+
+    axios.post(`${API_URL}/api/bands/${bandId}/review`, requestBody)
+    .then(() => {
+      console.log("Review created successfully");
+      setContent('');
+      setImg('');
+      setUser('');
+      setRating(0);
+      setHidden(true);
+    })
+    .catch((error) => console.log(error))
+
+  }
 
   return (
     <div style={{ paddingTop: "72px" }}>
       <p>{band.name}</p>
+
+      {authorization && <div>fuck</div>}
+
       <Box
         sx={{
           "& > legend": { mt: 2 },
         }}
       >
         <Typography component="legend">Leave a review</Typography>
+        <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
         <Rating
           name="simple-controlled"
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
+          value={rating}
+          
+          onChange={(e, newRating)=> setRating(newRating)}
           onClick={() => setHidden(false)}
         />
         {!hidden && (
@@ -53,30 +92,45 @@ function BandDetailsPage() {
               color="primary"
               multiline
               rows={9}
-              defaultValue=""
+              name="content"
+              value={content}
+              onChange={(e)=> setContent(e.target.value)}
               sx={{
                 bgcolor: "rgba(255,255,255,.6)",
                 borderRadius: "5px",
                 width: "500px",
               }}
             />
-            <Stack direction="row" spacing={2}>
+            <input type="file" name="review-picture" className="form-control-file form-control"/>
+            <Stack direction="row" spacing={6.6} sx={{marginTop: '8px'}}>
               <Button
+                onClick={() => {
+                  setRating(0);
+                  setHidden(true);
+                }}
                 variant="outlined"
                 sx={{
                   bgcolor: "rgba(255,255,255,.6)",
                   borderRadius: "5px",
                 }}
+                
                 startIcon={<DeleteIcon />}
               >
                 Delete
               </Button>
-              <Button variant="contained" endIcon={<SendIcon />}>
+              <Button variant="outlined" sx={{
+                  bgcolor: "rgba(255,255,255,.6)",
+                  borderRadius: "5px",
+                }} endIcon={<FileUploadIcon />}>
+                Upload Picture
+              </Button>
+              <Button variant="contained" endIcon={<SendIcon />} type="submit">
                 Post
               </Button>
             </Stack>
           </div>
         )}
+        </form>
       </Box>
     </div>
   );
