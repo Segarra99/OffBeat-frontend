@@ -77,18 +77,6 @@ function SignupPage() {
   /* FORM STEPS */
   const steps = ['Basic information', 'Account details', 'Review your information'];
 
-  /* function getStepContent(step) {
-    switch (step) {
-      case 0:
-        return <ProfileInfo/>;
-      case 1:
-        return <BasicInfo/>;
-      case 2:
-        return <RecapInfo/>;
-      default:
-        throw new Error('Unknown step');
-    }
-  } */
   const getStepContent = (step) => {
     switch (step) {
       case 0:
