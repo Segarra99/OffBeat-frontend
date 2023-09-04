@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import {AuthContext} from '../../Context/auth.context'
 const API_URL = 'http://localhost:5005';
 
@@ -20,7 +20,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
+import { Stack, Chip } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckIcon from "@mui/icons-material/Check";
 
 function Copyright(props) {
   return (
@@ -37,18 +40,26 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+const genreEx = ['rock', 'jazz', 'blues', 'reggae']
+const missingEx = ['none','strings', 'percussion', 'keys', 'vocals']
+
 function CreateBandPage() {
   const [name, setName] = useState('');
   const [img, setImg] = useState('');
   const [description, setDescription] = useState('');
-  const [genres, setGenres] = useState('');
-  const [missing, setMissing] = useState('');
-  const [founder, setFounder] = useState('');
+  const [genres, setGenres] = useState([]);
+  const [missing, setMissing] = useState([]);
+  const [founder, setFounder] = useState("");
 
   const navigate = useNavigate();
-
-
+  
   const {user} = useContext(AuthContext);
+
+  useEffect(() => {
+    setFounder(user._id);
+  }, [])
+  
+
 
   // Handle Submit Function
   const handleSubmit = (e) => {
@@ -56,19 +67,22 @@ function CreateBandPage() {
 
     const requestBody = {name, img, description, genres, missing, founder};
 
+    console.log(requestBody);
+    
     axios.post(`${API_URL}/api/bands`, requestBody)
-    .then(() => {
-      setName('');
+    .then((response) => {
+      /* setName('');
       setImg('');
       setDescription('');
-      setGenres('');
-      setMissing('');
-      setFounder('');
+      setGenres([]);
+      setMissing([]);
+      setFounder(); */
       navigate('/bands');
     })
     .catch((error) => console.log(error))
 
   }
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -87,7 +101,7 @@ function CreateBandPage() {
           <Typography component="h1" variant="h5">
             Create Your Band
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate encType="multipart/form-data" onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
                 <input
@@ -131,31 +145,85 @@ function CreateBandPage() {
                   onChange={(e)=> setName(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="genre"
-                  name="genre"
-                  required
-                  fullWidth
-                  id="genre"
-                  label="Music genre"
-                  autoFocus
-                  value={genres}
-                  onChange={(e)=> setGenres(e.target.value)}
-                />
+              <Grid item xs={12} md={6}>
+              <InputLabel>Genre selection</InputLabel>
+              <Select
+                multiple
+                value={genres}
+                onChange={(e) => setGenres(e.target.value)}
+                input={<OutlinedInput label="Multiple Select" />}
+                renderValue={(selected) => (
+                  <Stack gap={1} direction="row" flexWrap="wrap">
+                    {selected.map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        onDelete={() =>
+                          setGenres(
+                            instruments.filter((item) => item !== value)
+                          )
+                        }
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={(event) => event.stopPropagation()}
+                          />
+                        }
+                      />
+                    ))}
+                  </Stack>
+                )}
+              >
+                {genreEx.map((example) => (
+                  <MenuItem
+                    key={example}
+                    value={example}
+                    sx={{ justifyContent: "space-between" }}
+                  >
+                    {example}
+                    {genres.includes(example) ? <CheckIcon color="info" /> : null}
+                  </MenuItem>
+                ))}
+              </Select>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="missing"
-                  name="missing"
-                  required
-                  fullWidth
-                  id="missing"
-                  label="Missing"
-                  autoFocus
-                  value={missing}
-                  onChange={(e)=> setMissing(e.target.value)}
-                />
+              <Grid item xs={12} md={6}>
+              <InputLabel>Are you missing any band element?</InputLabel>
+              <Select
+                multiple
+                value={missing}
+                onChange={(e) => setMissing(e.target.value)}
+                input={<OutlinedInput label="Multiple Select" />}
+                renderValue={(selected) => (
+                  <Stack gap={1} direction="row" flexWrap="wrap">
+                    {selected.map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        onDelete={() =>
+                          setMissing(
+                            missing.filter((item) => item !== value)
+                          )
+                        }
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={(event) => event.stopPropagation()}
+                          />
+                        }
+                      />
+                    ))}
+                  </Stack>
+                )}
+              >
+                {missingEx.map((example) => (
+                  <MenuItem
+                    key={example}
+                    value={example}
+                    sx={{ justifyContent: "space-between" }}
+                  >
+                    {example}
+                    {missing.includes(example) ? <CheckIcon color="info" /> : null}
+                  </MenuItem>
+                ))}
+              </Select>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -170,6 +238,7 @@ function CreateBandPage() {
                   onChange={(e)=> setDescription(e.target.value)}
                 />
               </Grid>
+              
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
