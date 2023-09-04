@@ -16,7 +16,6 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -24,6 +23,7 @@ import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/ma
 import { Stack, Chip } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
+import Paper from '@mui/material/Paper';
 
 function Copyright(props) {
   return (
@@ -84,8 +84,9 @@ function CreateBandPage() {
   }
   
   return (
+    <div className="list-container" style={{ paddingTop: "72px" }}>
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" >
         <CssBaseline />
         <Box
           sx={{
@@ -95,9 +96,7 @@ function CreateBandPage() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, opacity: 0.8  }}>
           <Typography component="h1" variant="h5">
             Create Your Band
           </Typography>
@@ -160,7 +159,7 @@ function CreateBandPage() {
                         label={value}
                         onDelete={() =>
                           setGenres(
-                            instruments.filter((item) => item !== value)
+                            genres.filter((item) => item !== value)
                           )
                         }
                         deleteIcon={
@@ -238,13 +237,6 @@ function CreateBandPage() {
                   onChange={(e)=> setDescription(e.target.value)}
                 />
               </Grid>
-              
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -255,10 +247,12 @@ function CreateBandPage() {
               Create Band
             </Button>
           </Box>
+          </Paper>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
+    </div>
   )
 }
 

@@ -22,16 +22,30 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
-import { Stack, Chip } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
-import CheckIcon from "@mui/icons-material/Check";
 
 
+
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
+
+
 
 const genreEx = ['rock', 'jazz', 'blues', 'reggae']
 const missingEx = ['none','strings', 'percussion', 'keys', 'vocals']
-
 
 
 function EditBandPage() {
@@ -83,9 +97,155 @@ function EditBandPage() {
   };
 
   return (
-    <div>
-      <h1></h1>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Edit Your Band
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    required
+                    id="img"
+                    style={{ display: 'none' }}
+                    onChange={(e) => setImg(e.target.value)}
+                  />
+                  <label htmlFor="img">
+                    <TextField
+                      autoComplete="img"
+                      name="img"
+                      fullWidth
+                      label="Band image"
+                      autoFocus
+                      value={img}
+                      readOnly
+                    />
+                  </label>
+                  <Button
+                    variant="outlined"
+                    component="label" // This button acts as the visible trigger for the file input
+                    htmlFor="img"
+                  >
+                    Select Image
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="name"
+                    name="name"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Band name"
+                    autoFocus
+                    value={name}
+                    onChange={(e)=> setName(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    autoComplete="description"
+                    name="description"
+                    required
+                    fullWidth
+                    id="description"
+                    label="Description"
+                    autoFocus
+                    value={description}
+                    onChange={(e)=> setDescription(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+              <InputLabel>Are you missing any band element?</InputLabel>
+              <Select
+                multiple
+                value={missing}
+                onChange={(e) => setMissing(e.target.value)}
+                input={<OutlinedInput label="Multiple Select" />}
+                renderValue={(selected) => (
+                  <Stack gap={1} direction="row" flexWrap="wrap">
+                    {selected.map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        onDelete={() =>
+                          setMissing(
+                            missing.filter((item) => item !== value)
+                          )
+                        }
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={(event) => event.stopPropagation()}
+                          />
+                        }
+                      />
+                    ))}
+                  </Stack>
+                )}
+              >
+                {missingEx.map((example) => (
+                  <MenuItem
+                    key={example}
+                    value={example}
+                    sx={{ justifyContent: "space-between" }}
+                  >
+                    {example}
+                    {missing.includes(example) ? <CheckIcon color="info" /> : null}
+                  </MenuItem>
+                ))}
+              </Select>
+              </Grid>
+              </Grid>
+              
+
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
+              </Grid>
+            
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Update Band
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={deleteBand}
+                >
+                  Delete Band
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+    </ThemeProvider>
   )
 }
 
