@@ -30,6 +30,9 @@ function BandDetailsPage() {
   const [rating, setRating] = useState(0);
   const { user: currentUser } = useContext(AuthContext);
   const [authorization, setAuthorization] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const storedToken = localStorage.getItem("authToken");
 
   useEffect(() => {
     axios
@@ -37,29 +40,49 @@ function BandDetailsPage() {
       .then((response) => {
         setBand(response.data);
         setFounder(response.data.founder);
-        setUser(currentUser._id)
+        setUser(currentUser._id);
       })
       .catch((error) => console.log(error));
   }, []);
-  
-  useEffect(()=>{
-    if(user === founder._id){
+
+  useEffect(() => {
+    if (user === founder._id) {
       setAuthorization(true);
-    };
+    }
   }, [user]);
+
+  const handleImageChange = (e) => {
+    setUploading(true);
+
+    const uploadData = new FormData();
+
+    uploadData.append("img", e.target.files[0]);
+
+    axios
+      .post(`${API_URL}/api/upload`, uploadData)
+      .then((response) => {
+        setImg(response.data.fileUrl);
+        console.log(img);
+        setUploading(false);
+      })
+      .catch((err) => console.log("Error while uploading file:", err));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { content, img, user, rating };
+    const requestBody = { content, img, rating };
 
     axios
-      .post(`${API_URL}/api/bands/${bandId}/review`, requestBody)
+      .post(`${API_URL}/api/bands/${bandId}/review`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
       .then(() => {
         console.log("Review created successfully");
         setContent("");
         setImg("");
-        setUser("");
         setRating(0);
         setHidden(true);
       })
@@ -78,11 +101,7 @@ function BandDetailsPage() {
         }}
       >
         <Typography component="legend">Leave a review</Typography>
-        <form
-          method="post"
-          encType="multipart/form-data"
-          onSubmit={handleSubmit}
-        >
+        <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <Rating
             name="simple-controlled"
             value={rating}
@@ -108,8 +127,10 @@ function BandDetailsPage() {
               />
               <input
                 type="file"
+                accept="image/*"
+                id="img"
                 name="review-picture"
-                className="form-control-file form-control"
+                onChange={handleImageChange}
               />
               <Stack direction="row" spacing={6.6} sx={{ marginTop: "8px" }}>
                 <Button
