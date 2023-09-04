@@ -22,7 +22,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
-
+import CheckIcon from "@mui/icons-material/Check";
+import { Stack, Chip } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import Paper from '@mui/material/Paper';
 
 
 
@@ -43,7 +46,6 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 
-
 const genreEx = ['rock', 'jazz', 'blues', 'reggae']
 const missingEx = ['none','strings', 'percussion', 'keys', 'vocals']
 
@@ -54,8 +56,9 @@ function EditBandPage() {
   const [description, setDescription] = useState('');
   const [genres, setGenres] = useState([]);
   const [missing, setMissing] = useState([]);
-
+  
   const { bandId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -71,12 +74,11 @@ function EditBandPage() {
       .catch((error) => console.log(error));
   }, [bandId]);
 
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const requestBody = {name, img, description, genres, missing};
-
-    console.log(requestBody);
     
     axios
       .put(`${API_URL}/api/bands/${bandId}`, requestBody)
@@ -97,8 +99,10 @@ function EditBandPage() {
   };
 
   return (
+    <div className="list-container" style={{ paddingTop: "72px" }}>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
+      <Paper variant="outlined" sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 }, opacity: 0.8  }}>
         <CssBaseline />
         <Box
           sx={{
@@ -108,13 +112,11 @@ function EditBandPage() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          
           <Typography component="h1" variant="h5">
             Edit Your Band
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" encType='multipart/form-data' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                   <input
@@ -122,13 +124,14 @@ function EditBandPage() {
                     accept="image/*"
                     required
                     id="img"
+                    name="band-picture"
                     style={{ display: 'none' }}
                     onChange={(e) => setImg(e.target.value)}
                   />
                   <label htmlFor="img">
                     <TextField
                       autoComplete="img"
-                      name="img"
+                      name="band-picture"
                       fullWidth
                       label="Band image"
                       autoFocus
@@ -171,6 +174,46 @@ function EditBandPage() {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
+              <InputLabel>Genre selection</InputLabel>
+              <Select
+                multiple
+                value={genres}
+                onChange={(e) => setGenres(e.target.value)}
+                input={<OutlinedInput label="Multiple Select" />}
+                renderValue={(selected) => (
+                  <Stack gap={1} direction="row" flexWrap="wrap">
+                    {selected.map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        onDelete={() =>
+                          setGenres(
+                            genres.includes((item) => item !== value)
+                          )
+                        }
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={(event) => event.stopPropagation()}
+                          />
+                        }
+                      />
+                    ))}
+                  </Stack>
+                )}
+              >
+                {genreEx.map((example) => (
+                  <MenuItem
+                    key={example}
+                    value={example}
+                    sx={{ justifyContent: "space-between" }}
+                  >
+                    {example}
+                    {genres.includes(example) ? <CheckIcon color="info" /> : null}
+                  </MenuItem>
+                ))}
+              </Select>
+              </Grid>
+                <Grid item xs={12} md={6}>
               <InputLabel>Are you missing any band element?</InputLabel>
               <Select
                 multiple
@@ -211,41 +254,31 @@ function EditBandPage() {
               </Select>
               </Grid>
               </Grid>
-              
-
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+        </Paper>
+        <Grid item sm={6} sx={{display: 'flex', justifyContent: 'space-around' }}>
             <Button
               type="submit"
-              fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 0, mb: 2 }}
+              onClick={handleSubmit}
             >
               Update Band
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
                 <Button
                   type="submit"
-                  fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 0, mb: 2 }}
                   onClick={deleteBand}
                 >
                   Delete Band
                 </Button>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
+        </Grid>
       </Container>
     </ThemeProvider>
+    </div>
   )
 }
 

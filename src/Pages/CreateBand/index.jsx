@@ -96,7 +96,7 @@ function CreateBandPage() {
             alignItems: 'center',
           }}
         >
-          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, opacity: 0.8  }}>
+          <Paper variant="outlined" sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 }, opacity: 0.8  }}>
           <Typography component="h1" variant="h5">
             Create Your Band
           </Typography>
@@ -108,13 +108,14 @@ function CreateBandPage() {
                   accept="image/*"
                   required
                   id="img"
+                  name="band-picture"
                   style={{ display: 'none' }}
                   onChange={(e) => setImg(e.target.value)}
                 />
                 <label htmlFor="img">
                   <TextField
                     autoComplete="img"
-                    name="img"
+                    name="band-picture"
                     fullWidth
                     label="Band image"
                     autoFocus
@@ -238,16 +239,17 @@ function CreateBandPage() {
                 />
               </Grid>
             </Grid>
+          </Box>
+          </Paper>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 0, mb: 2 }}
+              onClick={handleSubmit}
             >
               Create Band
             </Button>
-          </Box>
-          </Paper>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>

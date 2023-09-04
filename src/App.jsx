@@ -64,7 +64,7 @@ function App() {
           }
         />
         <Route
-          path="/bands/edit"
+          path="/bands/:bandId/edit"
           element={
             <IsPrivate>
               <EditBandPage />
