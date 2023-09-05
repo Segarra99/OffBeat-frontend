@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import Navbar from "../../Components/Navbar";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import BandList from "../../Components/BandList";
 
 function BandListPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = (query) => {
-    setSearchQuery(query); // Update the searchQuery state
-  };
-
+  
+  useEffect(()=>{
+    const searchedBand = searchParams.get("searched");
+    setSearchQuery(searchedBand);
+  }, [searchParams])
   return (
     <div>
-      <Navbar onSearch={handleSearch} />
-      <BandList searchQuery={searchQuery} />
+      <BandList searchedBands={searchQuery}/>
     </div>
   );
 }

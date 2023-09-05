@@ -135,7 +135,7 @@ function EditProfilePage() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <TextField
             required
             id="firstName"
@@ -162,8 +162,8 @@ function EditProfilePage() {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid> */}
+        {/* <Grid item xs={12} md={6}>
           <TextField
             required
             id="lastName"
@@ -204,8 +204,8 @@ function EditProfilePage() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </Grid> */}
+        {/* <Grid item xs={12} md={6}>
         <InputLabel>Learned to play a new one? Nice!</InputLabel>
         <Select
           multiple
@@ -284,7 +284,7 @@ function EditProfilePage() {
             </MenuItem>
           ))}
         </Select>
-        </Grid>
+        </Grid> */}
       </Grid>
     </React.Fragment>
   )

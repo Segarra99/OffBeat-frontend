@@ -23,7 +23,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 const API_URL = "http://localhost:5005";
 
-function BandList() {
+function BandList(props) {
   const [bands, setBands] = useState([]);
   const [artists, setArtists] = useState([]);
   const [isListSwitched, setIsListSwitched] = useState(false);
@@ -53,16 +53,16 @@ function BandList() {
   }, []);
 
   useEffect(() => {
-    if (searchQuery) {
+    if (props.searchedBands) {
       const filtered = bands.filter((band) =>
-        band.name.toLowerCase().includes(searchQuery.toLowerCase())
+        band.name.toLowerCase().includes(props.searchedBands.toLowerCase())
       );
       setFilteredBands(filtered);
     } else {
       // If searchQuery is empty, display all bands
       setFilteredBands(bands);
     }
-  }, [bands, searchQuery]);
+  }, [props.searchedBands]);
 
   const handleSwitchChange = () => {
     setIsListSwitched(!isListSwitched);
