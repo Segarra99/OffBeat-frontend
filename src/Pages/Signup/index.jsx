@@ -22,6 +22,7 @@ import ProfileInfo from './profileInfo';
 import RecapInfo from './recapInfo';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/material";
+import Grid from '@mui/material/Grid';
 
 
 const API_URL = 'http://localhost:5005';
@@ -37,7 +38,8 @@ function SignupPage() {
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [nationality, setNationality] = useState('');
+  const [country, setCountry] = useState('');
+  const [description, setDescription] = useState('');
   const [instruments, setInstruments] = useState([])
   const [genres, setGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState(undefined);
@@ -47,7 +49,7 @@ function SignupPage() {
   const handleSubmit = (e) => {
       e.preventDefault();
 
-      const requestBody = {username, firstName, lastName, email, password, nationality, genres};
+      const requestBody = {username, firstName, lastName, email, password, country, description, genres, instruments};
 
       axios.post(`${API_URL}/auth/signup`, requestBody)
       .then((response)=>{
@@ -95,12 +97,14 @@ function SignupPage() {
           <BasicInfo
             firstName={firstName}
             lastName={lastName}
-            nationality={nationality}
+            country={country}
+            description={description}
             instruments={instruments}
             genres={genres}
             setFirstName={setFirstName}
             setLastName={setLastName}
-            setNationality={setNationality}
+            setCountry={setCountry}
+            setDescription={setDescription}
             setInstruments={setInstruments}
             setGenres={setGenres}
             genreEx={genreEx}
@@ -114,7 +118,8 @@ function SignupPage() {
             email={email}
             firstName={firstName}
             lastName={lastName}
-            nationality={nationality}
+            country={country}
+            description={description}
             instruments={instruments}
             genres={genres}
           />
@@ -138,6 +143,7 @@ function SignupPage() {
 
 
   return (
+    <div className="list-container" style={{ paddingTop: "72px" }}>
     <React.Fragment>
       <CssBaseline />
       <AppBar
@@ -191,10 +197,18 @@ function SignupPage() {
               </Box>
             </React.Fragment>
           )} 
+          <Grid container>
+            <Grid item>
+              <Link href="/login" variant="body2">
+                {"Already with us? Login"}
+              </Link>
+            </Grid>
+          </Grid>
+        <Copyright/>
         </Paper>
-        <Copyright />
       </Container>
     </React.Fragment>
+    </div>
   )
 }
 

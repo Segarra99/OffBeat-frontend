@@ -30,7 +30,10 @@ function RecapInfo(props) {
                   <Typography gutterBottom>Email: {props.email}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography gutterBottom>Nationality: {props.nationality}</Typography>
+                  <Typography gutterBottom>Country: {props.country}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography gutterBottom>Description: {props.description}</Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography gutterBottom>Instruments: {props.instruments}</Typography>

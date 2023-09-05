@@ -9,7 +9,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import CheckIcon from "@mui/icons-material/Check";
 
 function BasicInfo(props) {
-  const {firstName, setFirstName, lastName, setLastName, nationality, setNationality,instruments, setInstruments , genres, setGenres, genreEx, instrumentsEx} = props;
+  const {firstName, setFirstName, lastName, setLastName, country, setCountry,instruments, setInstruments , genres, setGenres, description, setDescription, genreEx, instrumentsEx} = props;
 
   return (
     <React.Fragment>
@@ -46,14 +46,27 @@ function BasicInfo(props) {
         <Grid item xs={12}>
           <TextField
             required
-            id="nationality"
-            label="Nationality"
-            name="nationality"
+            id="country"
+            label="Country"
+            name="country"
             fullWidth
-            autoComplete="nationality"
+            autoComplete="country"
             variant="standard"
-            value={nationality}
-            onChange = {(e) => setNationality(e.target.value)}
+            value={country}
+            onChange = {(e) => setCountry(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="description"
+            label="Description"
+            name="description"
+            fullWidth
+            autoComplete="description"
+            variant="standard"
+            value={description}
+            onChange = {(e) => setDescription(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={6}>

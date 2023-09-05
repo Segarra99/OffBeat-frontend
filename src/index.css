@@ -79,3 +79,55 @@ h1 {
   overflow: auto;
   width: 100vw;
 }
+
+/* Contacts page */
+.mainContacts{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+.mainContacts h1{
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.firstContact, .secondContact, .thirdContact {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  width: 75%;
+  background-color: rgba(0, 0, 0, 0.50);
+  padding: 15px;
+  border-radius: 15px;
+
+}
+
+.section-visible {
+  opacity: 1;
+}
+
+.insideContacts{
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.BtnDiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 75%;
+  padding-bottom: 15px;
+}
+
+.contactsBtn{
+  background-color: transparent;
+  border: none;
+  width: 15px;
+}

@@ -35,6 +35,7 @@ function ProfilePage() {
   return (
     <div style={{ paddingTop: '72px' }}>
       <h1>Artist {user.firstName} {user.lastName} profile</h1>
+      <img src={user.img} alt="" />
       <h4>Username: {user.username}</h4>
       <h4>From: {user.nationality}</h4>
       {authorization && <Link to={`/profile/${user._id}/edit`}> Update profile</Link>}
