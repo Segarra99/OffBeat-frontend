@@ -145,7 +145,7 @@ function Navbar(props) {
   const searchBand = () =>{
     navigate(`/bands?searched=${searchQuery}`)
   }
-
+console.log(user)
   return (
     <AppBar
       position="fixed"

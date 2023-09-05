@@ -17,18 +17,21 @@ function ProfilePage() {
   const storedToken = localStorage.getItem("authToken");
   const [profileUser, setProfileUser] = useState({});
   const [friendAdded, setFriendAdded] = useState(false);
+  const [isFriendAdded, setIsFriendAdded] = useState(false);
   const [friendRequestRemoved, setFriendRequestRemoved] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Function to add friend button
   const addFriend = () => {
-    setFriendAdded(!friendAdded);
+    setIsFriendAdded(true);
+    setFriendAdded(true);
   };
 
   // Function to remove friend request button
   const removeFriendRequest = () => {
-    setFriendRequestRemoved(!friendRequestRemoved);
-    setFriendAdded(!friendAdded);
+    setFriendRequestRemoved(true);
+    setFriendAdded(false);
+    setIsFriendAdded(false);
   };
 
   // Get profile user information
@@ -44,7 +47,7 @@ function ProfilePage() {
 
         // Check if user already sent a friend request
         if (response.data.profileUser.friendRequests.includes(user.user._id)) {
-          setFriendAdded(true);
+          setIsFriendAdded(true);
         }
         setLoading(false);
       })
@@ -104,7 +107,7 @@ function ProfilePage() {
         <p>Loading...</p>
       ) : (
         <div>
-          {!friendAdded ? (
+          {!isFriendAdded ? (
             <Button
               variant="contained"
               color="error"

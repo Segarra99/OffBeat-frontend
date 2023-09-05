@@ -20,6 +20,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { BorderAllRounded } from '@mui/icons-material';
 
 function Copyright(props) {
   return (
@@ -68,11 +69,12 @@ function LoginPage() {
       })
   }
   return (
-    <div>
+    <div className="login-container" style={{ paddingTop: "72px" }}>
       <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: '80vh',width: "60vw" }}>
         <CssBaseline />
         <Grid
+          className='login-img'
           item
           xs={false}
           sm={4}
