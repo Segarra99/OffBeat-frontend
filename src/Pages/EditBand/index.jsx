@@ -122,13 +122,10 @@ function EditBandPage() {
   };
 
   return (
-    <div className="list-container" style={{ paddingTop: "72px" }}>
+    <div className="edit-container" style={{ paddingTop: "72px" }}>
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs">
-          <Paper
-            variant="outlined"
-            sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 }, opacity: 0.8 }}
-          >
+        <Container className="edit-form" component="main" maxWidth="xs">
+
             <CssBaseline />
             <Box
               sx={{
@@ -296,7 +293,6 @@ function EditBandPage() {
               </Box>
             </Box>
             <Copyright sx={{ mt: 5 }} />
-          </Paper>
           <Grid
             item
             sm={6}
@@ -312,6 +308,7 @@ function EditBandPage() {
             </Button>
             <Button
               type="submit"
+              color="error"
               variant="contained"
               sx={{ mt: 0, mb: 2 }}
               onClick={deleteBand}

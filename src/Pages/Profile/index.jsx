@@ -132,7 +132,7 @@ function ProfilePage() {
           <h4>Username: {profileUser.username}</h4>
           <h4>From: {profileUser.nationality}</h4>
           {authorization && (
-            <Link to={`/profile/${user.user._id}/edit`}> Update profile</Link>
+            <Link to={`/profile/edit`}> Edit profile</Link>
           )}
         </div>
       )}
