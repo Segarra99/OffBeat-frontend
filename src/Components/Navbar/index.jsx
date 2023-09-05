@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Context/auth.context";
+import axios from "axios";
 import * as React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -20,6 +23,11 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import { styled, alpha } from "@mui/material/styles";
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 import Input from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
@@ -29,6 +37,10 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+
+
+const API_URL = "http://localhost:5005";
+
 
 const StyledInput = styled(Input)(({ theme }) => ({
   color: "inherit",
@@ -124,15 +136,26 @@ function Navbar(props) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElFriends, setAnchorElFriends] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [friendAccepted, setFriendAccepted] = useState(false);
+  const [friendRequestRemoved, setFriendRequestRemoved] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const storedToken = localStorage.getItem("authToken");
 
 
+  
+  /* Menu openings and closing */
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+
+  const handleOpenFriends = (event) => {
+    setAnchorElFriends(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -142,10 +165,77 @@ function Navbar(props) {
     setAnchorElUser(null);
   };
 
+  const handleCloseFriends = () => {
+    setAnchorElFriends(null)
+  }
+
   const searchBand = () =>{
     navigate(`/bands?searched=${searchQuery}`)
   }
 
+  // Function to accept friend requests
+  const acceptFriend = () => {
+    setFriendAccepted(!friendAccepted);
+  };
+
+  // Function to remove friend request button
+  const removeFriendRequest = () => {
+    setFriendRequestRemoved(!friendRequestRemoved);
+    setFriendAccepted(!friendAccepted);
+  };
+  
+  
+
+
+  // Accept friend request
+  const acceptFriendRequest = (friendId) => {
+    axios
+      .put(
+        `${API_URL}/api/friend-request/${friendId}/accept`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      )
+      .then(() => {
+        user.friendRequests.map((friend)=>{
+          if (friend._id === friendId){
+            const index = user.friendRequests.findIndex(friend)
+            user.friendRequests.splice(index, 1);
+          }
+        })
+        console.log("Friend request accepted!");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  // Decline friend request
+  const declineFriendRequest = (friendId) => {
+    axios
+      .put(
+        `${API_URL}/api/friend-request/${friendId}/decline`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        }
+      )
+      .then(() => {
+        user.friendRequests.map((friend)=>{
+          if (friend._id === friendId){
+            const index = user.friendRequests.findIndex(friend)
+            user.friendRequests.splice(index, 1);
+          }
+        })
+        console.log("Friend request declined!");
+      })
+      .catch((error) => console.log(error));
+  };
+
+  console.log(user)
   return (
     <AppBar
       position="fixed"
@@ -304,35 +394,95 @@ function Navbar(props) {
               onKeyDown={searchBand}
             />
           </Search>
-          <FormGroup>
-            <FormControlLabel
+          <FormGroup sx={{ ml: "40px", mr: "0", pr: "-80px"}}>
+            <FormControlLabel sx={{ mr: 0 }}
               control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
               label=""
             />
           </FormGroup>
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Box>
+          {isLoggedIn && (
+            <Box sx={{ display: "flex", marginRight: "14px" }}>
+              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="error">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+            </Box>
+          )}
+
+              {isLoggedIn && (
+                <Box sx={{ display: "flex", alignItems: "center", marginRight: "14px" }}>
+                  <Tooltip title="See all friend requests">
+                    <IconButton
+                      size="large"
+                      aria-label="show 4 new mails"
+                      color="inherit"
+                      onClick={handleOpenFriends}
+                    >
+                      <Badge badgeContent={user.friendRequests.length} color="error">
+                        <NotificationsIcon />
+                      </Badge>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    anchorEl={anchorElFriends}
+                    open={Boolean(anchorElFriends)}
+                    onClose={handleCloseFriends}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    sx={{bgcolor: "transparent", msOverflowY: "scroll"}}
+                  >
+                    {user.friendRequests.map((friend) => (
+                      <div key={friend._id}>
+                        <Card sx={{ width: 200, mb: 2 , width: "75px", width: "450px"}}>
+                          <CardActionArea sx={{display:"flex", flexDirection: "row"}}>
+                            <CardMedia
+                              component="img"
+                              height="40"
+                              image={friend.img}
+                              alt="artist image"
+                              sx={{borderRadius: "50%", width: "60px", height: "60px", margin: 0, padding: 0}}
+                            />
+                            <CardContent>
+                              <Typography gutterBottom variant="p" component="div">
+                                {friend.firstName} {friend.lastName}
+                              </Typography>
+                              <div>
+                                <Button
+                                  variant="contained"
+                                  color="error"
+                                  startIcon={<PersonAddIcon />}
+                                  onClick={acceptFriendRequest(friend._id)}
+                                >
+                                  Accept
+                                </Button>
+                                <Button
+                                  variant="outlined"
+                                  color="error"
+                                  startIcon={<PersonAddIcon />}
+                                  onClick={declineFriendRequest(friend._id)}
+                                >
+                                  Decline
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </CardActionArea>
+                        </Card>
+                      </div>
+                    ))}
+                  </Menu>
+                </Box>
+              )}
+
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Open user settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {isLoggedIn ? <Avatar src={user.img} /> : <Avatar src="/img" />}
               </IconButton>
