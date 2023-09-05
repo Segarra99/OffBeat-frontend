@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from "react-router-dom";
 
 
 
@@ -9,6 +9,7 @@ const API_URL = 'http://localhost:5005';
 function ProfilePage() {
   const [user, setUser] = useState({});
   const { userId } = useParams();
+  const [authorization, setAuthorization] = useState(false);
 
   const storedToken = localStorage.getItem('authToken')
 
@@ -25,13 +26,18 @@ function ProfilePage() {
 
   }, [])
   
-
+  useEffect(() => {
+    if (user._id === userId) {
+      setAuthorization(true);
+    }
+  }, [user]);
 
   return (
     <div style={{ paddingTop: '72px' }}>
-      <h1>Welcome to your profile, {user.username}</h1>
-      <h4>{user.firstName} {user.lastName}</h4>
-      {/* Add more user-related information here */}
+      <h1>Artist {user.firstName} {user.lastName} profile</h1>
+      <h4>Username: {user.username}</h4>
+      <h4>From: {user.nationality}</h4>
+      {authorization && <Link to={`/profile/${user._id}/edit`}> Update profile</Link>}
     </div>
   );
   
