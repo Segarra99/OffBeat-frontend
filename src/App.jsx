@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import IsAnon from "./Components/IsAnon";
-import IsPrivate from "./Components/IsPrivate";
+import IsPrivate from "./Components/isPrivate";
 
 /* Import all the pages */
 import HomePage from "./Pages/Home";
@@ -15,6 +15,7 @@ import SignupPage from "./Pages/Signup";
 import LoginPage from "./Pages/Login";
 import ContactsPage from "./Pages/Contacts";
 import BandDetailsPage from "./Pages/BandDetails";
+import PostDetails from "./Pages/PostDetails";
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
     <div>
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/feed" element={<HomePage />} />
+        <Route path="/feed/:postId" element={<PostDetails />} />
         <Route
           path="/signup"
           element={
