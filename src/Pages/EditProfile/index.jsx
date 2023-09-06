@@ -112,7 +112,7 @@ function EditProfilePage() {
     };
     console.log(user)
     axios
-      .post(`${API_URL}/profile/${userId}/edit`, requestBody)
+      .post(`${API_URL}/api/profile/${userId}/edit`, requestBody)
       .then((response) => {
         navigate("/login");
       })

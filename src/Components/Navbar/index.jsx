@@ -286,7 +286,7 @@ function Navbar(props) {
             >
               <Button
                 component={Link}
-                to="/"
+                to="/feed"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "black", display: "block", width: "100px" }}
               >
@@ -340,7 +340,7 @@ function Navbar(props) {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               component={Link}
-              to="/"
+              to="/feed"
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
