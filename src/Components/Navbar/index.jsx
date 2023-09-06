@@ -37,6 +37,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const API_URL = "https://offbeat-backend.onrender.com";
 
@@ -127,8 +128,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-function Navbar(props) {
-  const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
+function Navbar() {
+  const { isLoggedIn, user, storeToken, logOutUser, authenticateUser } =
+    useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -167,6 +169,10 @@ function Navbar(props) {
     navigate(`/bands?searched=${searchQuery}`);
   };
 
+  useEffect(()=>{
+    setSearchQuery(searchQuery)
+  }, [searchQuery])
+
   // Function to accept friend requests
   const acceptFriend = () => {
     setFriendAccepted(!friendAccepted);
@@ -178,52 +184,57 @@ function Navbar(props) {
     setFriendAccepted(!friendAccepted);
   };
 
+  /* useEffect(() => {
+    tokenUpdate();
+    authenticateUser();
+  }, []); */
+
   // Accept friend request
-  const acceptFriendRequest = (friendId) => {
-    axios
-      .put(
+  const acceptFriendRequest = async (friendId) => {
+    try {
+      await axios.put(
         `${API_URL}/api/friend-request/${friendId}/accept`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        }
-      )
-      .then(() => {
-        const updatedFriendRequests = user.friendRequests.filter(
-          (friend) => friend._id !== friendId
-        );
-        user.friendRequests = updatedFriendRequests;
-        console.log("Friend request accepted!");
-      })
-      .catch((error) => console.log(error));
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      );
+
+      tokenUpdate();
+      authenticateUser();
+      console.log("Friend request accepted!");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Decline friend request
-  const declineFriendRequest = (friendId) => {
-    axios
-      .put(
+  const declineFriendRequest = async (friendId) => {
+    try {
+      await axios.put(
         `${API_URL}/api/friend-request/${friendId}/decline`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        }
-      )
-      .then(() => {
-        const updatedFriendRequests = user.friendRequests.filter(
-          (friend) => friend._id !== friendId
-        );
-        user.friendRequests = updatedFriendRequests;
-        console.log("Friend request declined!");
-      })
-      .catch((error) => console.log(error));
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      );
+
+      tokenUpdate();
+      authenticateUser();
+      console.log("Friend request declined!");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  console.log(user);
-  console.log(user);
+  // funtion to call the backend route updateToken that updates the token everytime the user to perform changes
+  const tokenUpdate = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/auth/updateToken`, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      });
+      storeToken(response.data.authToken);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+console.log(user)
   return (
     <AppBar
       position="fixed"
@@ -379,7 +390,7 @@ function Navbar(props) {
               placeholder="Search…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={searchBand}
+              onKeyUp={searchBand}
             />
           </Search>
           <FormGroup sx={{ ml: "40px", mr: "0", pr: "-80px" }}>
@@ -440,54 +451,62 @@ function Navbar(props) {
                 }}
                 sx={{ bgcolor: "transparent", msOverflowY: "scroll" }}
               >
-                {user.friendRequests.map((friend) => (
-                  <div key={friend._id}>
-                    <Card
-                      sx={{ width: 200, mb: 2, width: "75px", width: "450px" }}
-                    >
-                      <CardActionArea
-                        sx={{ display: "flex", flexDirection: "row" }}
+                {user &&
+                  user.friendRequests.map((friend) => (
+                    <div key={friend._id}>
+                      <Card
+                        sx={{
+                          width: 200,
+                          mb: 2,
+                          height: "15vh",
+                          width: "35vw",
+                        }}
                       >
-                        <CardMedia
-                          component="img"
-                          height="40"
-                          image={friend.img}
-                          alt="artist image"
-                          sx={{
-                            borderRadius: "50%",
-                            width: "60px",
-                            height: "60px",
-                            margin: 0,
-                            padding: 0,
-                          }}
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="p" component="div">
-                            {friend.firstName} {friend.lastName}
-                          </Typography>
-                          <div>
-                            <Button
-                              variant="contained"
-                              color="error"
-                              startIcon={<PersonAddIcon />}
-                              onClick={acceptFriendRequest(friend._id)}
+                        <Box>
+                          <CardMedia
+                            component="img"
+                            height="40"
+                            image={friend.img}
+                            alt="artist image"
+                            sx={{
+                              borderRadius: "50%",
+                              width: "60px",
+                              height: "60px",
+                              margin: 0,
+                              padding: 0,
+                            }}
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="p"
+                              component="div"
                             >
-                              Accept
-                            </Button>
-                            <Button
-                              variant="outlined"
-                              color="error"
-                              startIcon={<PersonAddIcon />}
-                              onClick={declineFriendRequest(friend._id)}
-                            >
-                              Decline
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </div>
-                ))}
+                              {friend.firstName} {friend.lastName}
+                            </Typography>
+                            <div>
+                              <Button
+                                variant="contained"
+                                color="error"
+                                startIcon={<PersonAddIcon />}
+                                onClick={() => acceptFriendRequest(friend._id)}
+                              >
+                                Accept
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                color="error"
+                                startIcon={<ClearIcon />}
+                                onClick={() => declineFriendRequest(friend._id)}
+                              >
+                                Decline
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Box>
+                      </Card>
+                    </div>
+                  ))}
               </Menu>
             </Box>
           )}

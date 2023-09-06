@@ -7,12 +7,12 @@ function BandListPage() {
   const [searchQuery, setSearchQuery] = useState("");
   
   useEffect(()=>{
-    const searchedBand = searchParams.get("searched");
-    setSearchQuery(searchedBand);
+    const searched = searchParams.get("searched");
+    setSearchQuery(searched);
   }, [searchParams])
   return (
     <div>
-      <BandList searchedBands={searchQuery}/>
+      <BandList searched={searchQuery}/>
     </div>
   );
 }
