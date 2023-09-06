@@ -20,10 +20,14 @@ function Feed() {
   const [posts, setPosts] =  useState([]);
   const [content, setContent] = useState("");
   const [img, setImg] = useState("");
+  const [author, setAuthor] = useState("")
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [uploading, setUploading] = useState(false);
 
+  useEffect(() => {
+    setAuthor(user._id);
+  }, []);
 
   useEffect(() => {
     axios
@@ -53,7 +57,7 @@ function Feed() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { content, img};
+    const requestBody = { content, img, author};
 
     console.log(requestBody);
 
@@ -62,6 +66,7 @@ function Feed() {
       .then(() => {
         setContent('');
         setImg('');
+        setAuthor();
       })
       .catch((error) => console.log(error));
   }
@@ -122,7 +127,7 @@ function Feed() {
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
                       {post.content}
-                      <p>Created in {new Date(post.createdAt).toLocaleDateString()}</p>
+                      <p>Created in {new Date(post.createdAt).toLocaleDateString()} by {post.author.firstName} {post.author.lastName}</p>
                     </Typography>
                   </CardContent>
                 </CardActionArea>

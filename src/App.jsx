@@ -23,10 +23,15 @@ function App() {
     <div>
       <Navbar />
       <Routes>
-        <Route path="/feed" element={<HomePage />} />
+        <Route path="/feed" element={
+            <IsPrivate>
+            <HomePage />
+            </IsPrivate>
+          } 
+        />
         <Route path="/feed/:postId" element={<PostDetails />} />
         <Route
-          path="/signup"
+          path="/feed"
           element={
             <IsAnon>
               <SignupPage />
