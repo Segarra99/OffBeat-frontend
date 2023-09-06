@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/auth.context";
 
-const API_URL = "https://offbeat-backend.onrender.com";
+const API_URL = "http://localhost:5005";
 
 //Import Materials UI
 import Card from "@mui/material/Card";
@@ -64,58 +64,51 @@ function Feed() {
         setImg('');
       })
       .catch((error) => console.log(error));
-  };
-
-console.log(user)
-  let createdAt = new Date(user.createdAt).toLocaleDateString()
-  let today = new Date()
-  let timePassed = today - createdAt
+  }
 
 
   return (
         <div className="list" style={{ paddingTop: '72px' }}>
-          <Link to="/feed/create">Share my strings</Link>
-
-<div className="postForms">
-<form action="submit" method="POST">
-<p>Share your strings</p>
-<label htmlFor="content">
-  <textarea
-    cols={90}
-    rows={7}
-    type="text"
-    placeholder="Write here..."
-    name="content"
-    required
-    id="content"
-    autoFocus
-    value={content}
-    onChange={(e) => setContent(e.target.value)}
-  />
-</label>
-<label htmlFor="img">
-  <input
-    type="file"
-    accept="image/*"
-    id="img"
-    name="img"
-    style={{ display: "none" }}
-    onChange={handleImageChange}
-    autoComplete="img"
-    autoFocus
-  />
-  <button htmlFor="img" onClick={() => document.getElementById('img').click()}>
-    Select Image
-  </button>
-</label>
-<button
-  type="submit"
-  variant="contained"
-  onClick={handleSubmit}
->
-  Post
-</button>
-</form>
+          <div className="postForms">
+          <form action="submit" method="POST">
+          <p>Share your strings</p>
+          <label htmlFor="content">
+            <textarea
+              cols={90}
+              rows={7}
+              type="text"
+              placeholder="Write here..."
+              name="content"
+              required
+              id="content"
+              autoFocus
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </label>
+          <label htmlFor="img">
+            <input
+              type="file"
+              accept="image/*"
+              id="img"
+              name="img"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+              autoComplete="img"
+              autoFocus
+            />
+            <button htmlFor="img" onClick={() => document.getElementById('img').click()}>
+              Select Image
+            </button>
+          </label>
+          <button
+            type="submit"
+            variant="contained"
+            onClick={handleSubmit}
+          >
+            Post
+          </button>
+          </form>
           {posts.map((post) => (
             <div key={post._id}>
               <Card sx={{ width: 900, mb: 20}}>
@@ -129,11 +122,12 @@ console.log(user)
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
                       {post.content}
+                      <p>Created in {new Date(post.createdAt).toLocaleDateString()}</p>
                     </Typography>
                   </CardContent>
                 </CardActionArea>
               </Card>
-              <p>{timePassed}</p>
+              
             </div>
             
           ))}

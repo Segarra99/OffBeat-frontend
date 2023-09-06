@@ -5,7 +5,7 @@ import { AuthContext } from "../../Context/auth.context";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "https://offbeat-backend.onrender.com";
+const API_URL = "http://localhost:5005";
 
 //Import Material UI
 /* Material UI imports */
