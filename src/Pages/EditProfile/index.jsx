@@ -110,9 +110,9 @@ function EditProfilePage() {
       description,
       instruments,
     };
-
+    console.log(user)
     axios
-      .post(`${API_URL}/auth/signup`, requestBody)
+      .post(`${API_URL}/profile/${userId}/edit`, requestBody)
       .then((response) => {
         navigate("/login");
       })

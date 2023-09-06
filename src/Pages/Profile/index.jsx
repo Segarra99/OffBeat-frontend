@@ -129,8 +129,9 @@ function ProfilePage() {
           <h1>
             Artist {profileUser.firstName} {profileUser.lastName} profile
           </h1>
+          <img src={profileUser.img} alt="Profile pic" />
           <h4>Username: {profileUser.username}</h4>
-          <h4>From: {profileUser.nationality}</h4>
+          <h4>From: {profileUser.country}</h4>
           {authorization && (
             <Link to={`/profile/edit`}> Edit profile</Link>
           )}
