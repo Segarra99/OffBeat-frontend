@@ -66,7 +66,6 @@ h1 {
   width: 100vw;
   display: flex;
   flex-direction: column;
-  align-items: center;
   align-content: center;
   overflow-x: hidden;
 }
@@ -78,6 +77,14 @@ h1 {
   max-height: 800px;
   overflow: auto;
   width: 100vw;
+}
+
+.list-artists{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 100vh;
+  width: 80vw;
 }
 
 /* Contacts page */

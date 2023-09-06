@@ -38,6 +38,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ClearIcon from "@mui/icons-material/Clear";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 const API_URL = "https://offbeat-backend.onrender.com";
 
@@ -408,6 +409,19 @@ console.log(user)
                 color="inherit"
               >
                 <Badge badgeContent={4} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Box>
+          )}
+          {isLoggedIn && (
+            <Box sx={{ display: "flex", marginRight: "14px" }}>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+              >
+                <Badge badgeContent={4} color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>
@@ -433,7 +447,7 @@ console.log(user)
                     badgeContent={user.friendRequests.length}
                     color="error"
                   >
-                    <NotificationsIcon />
+                    <GroupAddIcon />
                   </Badge>
                 </IconButton>
               </Tooltip>
