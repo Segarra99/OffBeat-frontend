@@ -42,24 +42,44 @@ function BandList(props) {
   useEffect(() => {
     axios
       .get(`${API_URL}/api/bands`)
-      .then((response) => {setBands(response.data), setFilteredBands(response.data)})
+      .then((response) => {
+        setBands(response.data), setFilteredBands(response.data);
+      })
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     axios
       .get(`${API_URL}/api/artists`)
-      .then((response) => {setArtists(response.data), setFilteredArtists(response.data)})
+      .then((response) => {
+        setArtists(response.data), setFilteredArtists(response.data);
+      })
       .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
     if (props.searched) {
-      const filteredBands = bands.filter((band) =>
-        band.name.toLowerCase().includes(props.searched.toLowerCase())
+      const filteredBands = bands.filter(
+        (band) =>
+          band.name.toLowerCase().includes(props.searched.toLowerCase()) ||
+          band.genres.toLowerCase().includes(props.searched.toLowerCase()) ||
+          band.missing.toLowerCase().includes(props.searched.toLowerCase())
       );
-      const filteredArtists = artists.filter((artist) =>
-        artist.firstName.toLowerCase().includes(props.searched.toLowerCase())
+      const filteredArtists = artists.filter(
+        (artist) =>
+          artist.firstName
+            .toLowerCase()
+            .includes(props.searched.toLowerCase()) ||
+          artist.lastName
+            .toLowerCase()
+            .includes(props.searched.toLowerCase()) ||
+          artist.instruments
+            .toLowerCase()
+            .includes(props.searched.toLowerCase()) ||
+          artist.username
+            .toLowerCase()
+            .includes(props.searched.toLowerCase()) ||
+          artist.country.toLowerCase().includes(props.searched.toLowerCase())
       );
       setFilteredBands(filteredBands);
       setFilteredArtists(filteredArtists);
@@ -88,52 +108,54 @@ function BandList(props) {
       <Link to="/bands/create">Form a Band</Link>
       {isListSwitched ? (
         <List sx={{ width: "100%", maxWidth: 360 }}>
-          {filteredArtists.map((artist) => (
-            <div key={artist._id}>
-              <ListItemButton
-                component="a"
-                href={`/profile/${artist._id}`}
-                alignItems="flex-start"
-              >
+          <div className="list-artists">
+            {filteredArtists.map((artist) => (
+              <div key={artist._id}>
+                <ListItemButton
+                  component="a"
+                  href={`/profile/${artist._id}`}
+                  alignItems="flex-start"
+                >
+                  <Divider
+                    variant="inset"
+                    component="li"
+                    sx={{ bgcolor: "white" }}
+                  />
+                  <ListItemAvatar>
+                    <Avatar
+                      alt="Avatar"
+                      src={artist.img}
+                      sx={{ width: "100px", height: "100px" }}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${artist.firstName} ${artist.lastName}`}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="white"
+                        >
+                          {artist.instruments.map((instrument) => (
+                            <React.Fragment key={instrument}>
+                              {instrument}
+                            </React.Fragment>
+                          ))}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItemButton>
                 <Divider
                   variant="inset"
                   component="li"
                   sx={{ bgcolor: "white" }}
                 />
-                <ListItemAvatar>
-                  <Avatar
-                    alt="Avatar"
-                    src={artist.img}
-                    sx={{ width: "100px", height: "100px" }}
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${artist.firstName} ${artist.lastName}`}
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="white"
-                      >
-                        {artist.instruments.map((instrument) => (
-                          <React.Fragment key={instrument}>
-                            {instrument}
-                          </React.Fragment>
-                        ))}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                />
-              </ListItemButton>
-              <Divider
-                variant="inset"
-                component="li"
-                sx={{ bgcolor: "white" }}
-              />
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </List>
       ) : (
         <div className="list">
