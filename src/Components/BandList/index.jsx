@@ -21,7 +21,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 function BandList(props) {
   const [bands, setBands] = useState([]);

@@ -25,7 +25,7 @@ import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/ma
 import Grid from '@mui/material/Grid';
 
 
-const API_URL = 'http://localhost:5005';
+const API_URL = 'https://offbeat-backend.onrender.com';
 
 const defaultTheme = createTheme();
 

@@ -8,7 +8,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 function ProfilePage() {
   const user = useContext(AuthContext);
