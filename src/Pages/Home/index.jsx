@@ -11,19 +11,52 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
-
-
+import { styled } from '@mui/material/styles';
+import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import { red } from '@mui/material/colors';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 function Feed() {
   const [posts, setPosts] =  useState([]);
   const [content, setContent] = useState("");
   const [img, setImg] = useState("");
+  const [author, setAuthor] = useState("")
+  const [post, setPost] = useState("")
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [uploading, setUploading] = useState(false);
+  const [comments, setComments] = useState([]);
 
+
+  const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+  })(({ theme, expand }) => ({
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  }));
+
+  const [expanded, setExpanded] = useState(false);
+    
+  
+    const handleExpandClick = () => {
+      setExpanded(!expanded);
+    }
+
+
+
+  useEffect(() => {
+    setAuthor(user._id);
+  }, []);
 
   useEffect(() => {
     axios
@@ -53,7 +86,7 @@ function Feed() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { content, img};
+    const requestBody = { content, img, author};
 
     console.log(requestBody);
 
@@ -62,10 +95,64 @@ function Feed() {
       .then(() => {
         setContent('');
         setImg('');
+        setAuthor();
       })
       .catch((error) => console.log(error));
   }
 
+  const deletePost = (postId) => {
+    setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    axios
+      .delete(`${API_URL}/api/feed/${postId}`)
+      .then((response) => {
+        console.log(response.data.message); 
+      })
+      .catch((error) => {
+        console.log("Error deleting post:", error);
+      });
+  }; 
+
+  /* Get comments */
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/feed/comments`)
+      .then((response) => setComments(response.data))
+      .catch((error) => console.log(error));
+  }, []);
+  console.log(comments)
+
+  // Handle Comment Submit Function
+  const handleCommentSubmit = (e, postId) => {
+    e.preventDefault();
+    setPost(postId)
+    const requestBody = { content, author, post};
+
+    console.log(requestBody);
+
+    axios
+      .post(`${API_URL}/api/feed/comments`, requestBody)
+      .then(() => {
+        setContent('');
+        setAuthor();
+        setPost();
+      })
+      .catch((error) => console.log(error));
+  }
+
+  const deleteComment = (commentId) => {
+    setComments((prevComment) => prevComment.filter((comment) => comment._id !== commentId));
+    axios
+      .delete(`${API_URL}/api/feed/${commentId}`)
+      .then((response) => {
+        console.log(response.data.message); 
+      })
+      .catch((error) => {
+        console.log("Error deleting post:", error);
+      });
+  };
+
+
+  
 
   return (
         <div className="list" style={{ paddingTop: '72px' }}>
@@ -97,7 +184,7 @@ function Feed() {
               autoComplete="img"
               autoFocus
             />
-            <button htmlFor="img" onClick={() => document.getElementById('img').click()}>
+            <button htmlFor="img" onClick={(e) => {e.preventDefault(); document.getElementById('img').click()}}>
               Select Image
             </button>
           </label>
@@ -112,7 +199,6 @@ function Feed() {
           {posts.map((post) => (
             <div key={post._id}>
               <Card sx={{ width: 900, mb: 20}}>
-                <CardActionArea component={Link} to={`/feed/${post._id}`}>
                   <CardMedia
                     component="img"
                     height="500"
@@ -122,12 +208,52 @@ function Feed() {
                   <CardContent>
                     <Typography variant="body2" color="text.secondary">
                       {post.content}
-                      <p>Created in {new Date(post.createdAt).toLocaleDateString()}</p>
                     </Typography>
+                        Created in {new Date(post.createdAt).toLocaleDateString()} by {post.author.firstName} {post.author.lastName}
                   </CardContent>
-                </CardActionArea>
-              </Card>
-              
+                  <button
+                    type="submit"
+                    onClick={() => { deletePost(post._id)}}
+                  >
+                    Delete
+                  </button>
+                  <CardActions disableSpacing>
+                    <ExpandMore
+                      expand={expanded}
+                      onClick={handleExpandClick}
+                      aria-expanded={expanded}
+                      aria-label="See comments"
+                    >
+                      <ExpandMoreIcon />
+                    </ExpandMore>
+                  </CardActions>
+                  <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                      
+                      {comments.map((comment) => (
+                          <div key={comment._id}>
+                            <Card sx={{ width: 900, mb: 20}}>
+                                <CardContent>
+                                  <Typography variant="body2" color="text.secondary">
+                                    {comment.author.firstName} {comment.author.lastName}
+                                  </Typography>
+                                  <Typography variant="body3" color="text.secondary">
+                                    {comment.content}
+                                  </Typography>
+                                </CardContent>
+                                <button
+                                  type="submit"
+                                  onClick={() => { deleteComment(comment._id)}}
+                                >
+                                  Delete
+                                </button>
+                            </Card>
+                          </div>
+                        ))}
+                      
+                    </CardContent>
+                  </Collapse>
+                </Card>
             </div>
             
           ))}
