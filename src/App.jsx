@@ -25,7 +25,7 @@ function App() {
     <div>
       <Navbar />
       <Routes>
-        <Route path="/feed" element={
+        <Route path="/" element={
             <IsPrivate>
             <HomePage />
             </IsPrivate>

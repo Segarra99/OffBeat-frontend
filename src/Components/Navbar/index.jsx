@@ -186,10 +186,16 @@ function Navbar() {
     setFriendAccepted(!friendAccepted);
   };
 
-  /* useEffect(() => {
-    tokenUpdate();
-    authenticateUser();
-  }, []); */
+  
+
+  useEffect(() => {
+    async function updateUser(){
+      await tokenUpdate();
+      await authenticateUser();
+    }
+
+    updateUser()
+  }, []);
 
   // Accept friend request
   const acceptFriendRequest = async (friendId) => {
@@ -200,8 +206,8 @@ function Navbar() {
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
-      tokenUpdate();
-      authenticateUser();
+      await tokenUpdate();
+      await authenticateUser();
       console.log("Friend request accepted!");
     } catch (error) {
       console.log(error);
@@ -217,8 +223,8 @@ function Navbar() {
         { headers: { Authorization: `Bearer ${storedToken}` } }
       );
 
-      tokenUpdate();
-      authenticateUser();
+      await tokenUpdate();
+      await authenticateUser();
       console.log("Friend request declined!");
     } catch (error) {
       console.log(error);
@@ -299,7 +305,7 @@ console.log(user)
             >
               <Button
                 component={Link}
-                to="/feed"
+                to="/"
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "black", display: "block", width: "100px" }}
               >
@@ -353,7 +359,7 @@ console.log(user)
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               component={Link}
-              to="/feed"
+              to="/"
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
