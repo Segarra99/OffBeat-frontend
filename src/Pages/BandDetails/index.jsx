@@ -40,16 +40,22 @@ function BandDetailsPage() {
       .then((response) => {
         setBand(response.data);
         setFounder(response.data.founder);
-        setUser(currentUser._id);
+        console.log(response.data)
       })
       .catch((error) => console.log(error));
-  }, []);
+    }, []);
 
-  useEffect(() => {
-    if (user === founder._id) {
-      setAuthorization(true);
-    }
-  }, [user]);
+    useEffect(()=>{
+      setUser(currentUser._id);
+    }, [founder])
+
+    useEffect(() => {
+      if (founder && user === founder._id) {
+        setAuthorization(true);
+      } else {
+        setAuthorization(false);
+      }
+    }, [founder, user]);
 
   const handleImageChange = (e) => {
     setUploading(true);
@@ -168,6 +174,18 @@ function BandDetailsPage() {
             </div>
           )}
         </form>
+        {authorization && (  
+            <Link to={`/bands/${bandId}/samples`}>Upload Sample</Link>
+            )}
+            {band.samples &&
+        band.samples.map((sample)=>(
+            <div key={sample._id}>
+            <p>{sample.name}</p>
+            <audio controls>
+            <source src={sample.audio} type="audio/mpeg"/>
+          </audio>
+          </div>
+          ))}
       </Box>
     </div>
   );

@@ -59,28 +59,66 @@ function BandList(props) {
 
   useEffect(() => {
     if (props.searched) {
-      const filteredBands = bands.filter(
-        (band) =>
-          band.name.toLowerCase().includes(props.searched.toLowerCase()) ||
-          band.genres.toLowerCase().includes(props.searched.toLowerCase()) ||
-          band.missing.toLowerCase().includes(props.searched.toLowerCase())
-      );
-      const filteredArtists = artists.filter(
-        (artist) =>
-          artist.firstName
-            .toLowerCase()
-            .includes(props.searched.toLowerCase()) ||
-          artist.lastName
-            .toLowerCase()
-            .includes(props.searched.toLowerCase()) ||
-          artist.instruments
-            .toLowerCase()
-            .includes(props.searched.toLowerCase()) ||
-          artist.username
-            .toLowerCase()
-            .includes(props.searched.toLowerCase()) ||
-          artist.country.toLowerCase().includes(props.searched.toLowerCase())
-      );
+      const filteredBands = bands.filter((band) => {
+        const name = band.name || '';
+        const genres = Array.isArray(band.genres) ? band.genres.join(' ') : band.genres || '';
+        const missing = Array.isArray(band.missing) ? band.missing.join(' ') : band.missing || '';
+  
+        if (typeof name !== 'string') {
+          console.error(`Invalid name: ${name}`);
+        }
+  
+        if (typeof genres !== 'string') {
+          console.error(`Invalid genres: ${genres}`);
+        }
+  
+        if (typeof missing !== 'string') {
+          console.error(`Invalid missing: ${missing}`);
+        }
+  
+        return (
+          name.toLowerCase().includes(props.searched.toLowerCase()) ||
+          genres.toLowerCase().includes(props.searched.toLowerCase()) ||
+          missing.toLowerCase().includes(props.searched.toLowerCase())
+        );
+      });
+  
+      const filteredArtists = artists.filter((artist) => {
+        const firstName = artist.firstName || '';
+        const lastName = artist.lastName || '';
+        const instruments = Array.isArray(artist.instruments) ? artist.instruments.join(' ') : artist.instruments || '';
+        const username = artist.username || '';
+        const country = artist.country || '';
+  
+        if (typeof firstName !== 'string') {
+          console.error(`Invalid firstName: ${firstName}`);
+        }
+  
+        if (typeof lastName !== 'string') {
+          console.error(`Invalid lastName: ${lastName}`);
+        }
+  
+        if (typeof instruments !== 'string') {
+          console.error(`Invalid instruments: ${instruments}`);
+        }
+  
+        if (typeof username !== 'string') {
+          console.error(`Invalid username: ${username}`);
+        }
+  
+        if (typeof country !== 'string') {
+          console.error(`Invalid country: ${country}`);
+        }
+  
+        return (
+          firstName.toLowerCase().includes(props.searched.toLowerCase()) ||
+          lastName.toLowerCase().includes(props.searched.toLowerCase()) ||
+          instruments.toLowerCase().includes(props.searched.toLowerCase()) ||
+          username.toLowerCase().includes(props.searched.toLowerCase()) ||
+          country.toLowerCase().includes(props.searched.toLowerCase())
+        );
+      });
+  
       setFilteredBands(filteredBands);
       setFilteredArtists(filteredArtists);
     } else {
