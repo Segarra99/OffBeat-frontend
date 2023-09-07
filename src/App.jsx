@@ -16,6 +16,8 @@ import LoginPage from "./Pages/Login";
 import ContactsPage from "./Pages/Contacts";
 import BandDetailsPage from "./Pages/BandDetails";
 import PostDetails from "./Pages/PostDetails";
+import CreateSamplePage from "./Pages/CreateSample";
+import CreateSampleBandPage from "./Pages/CreateSampleBand";
 
 
 function App() {
@@ -86,6 +88,22 @@ function App() {
           element={
             <IsPrivate>
               <EditProfilePage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/profile/:userId/samples"
+          element={
+            <IsPrivate>
+              <CreateSamplePage />
+            </IsPrivate>
+          }
+        />
+        <Route
+          path="/bands/:bandId/samples"
+          element={
+            <IsPrivate>
+              <CreateSampleBandPage />
             </IsPrivate>
           }
         />

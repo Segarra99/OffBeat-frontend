@@ -99,12 +99,12 @@ function CreateBandPage() {
     axios
       .post(`${API_URL}/api/bands`, requestBody)
       .then(() => {
-        setName('');
-      setImg('');
-      setDescription('');
-      setGenres([]);
-      setMissing([]);
-      setFounder();
+        setName("");
+        setImg("");
+        setDescription("");
+        setGenres([]);
+        setMissing([]);
+        setFounder();
         navigate("/bands");
       })
       .catch((error) => console.log(error));
@@ -132,7 +132,7 @@ function CreateBandPage() {
               </Typography>
               <Box
                 component="form"
-                encType='multipart/form-data'
+                encType="multipart/form-data"
                 noValidate
                 onSubmit={handleSubmit}
                 sx={{ mt: 3 }}
