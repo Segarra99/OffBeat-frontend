@@ -194,14 +194,14 @@ function Navbar() {
     setSearchQuery(searchQuery);
   }, [searchQuery]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     async function updateUser() {
       await tokenUpdate();
       await authenticateUser();
     }
 
     updateUser();
-  }, []);
+  }, []); */
 
   // Accept friend request
   const acceptFriendRequest = async (friendId) => {

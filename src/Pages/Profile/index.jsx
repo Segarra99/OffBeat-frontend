@@ -20,6 +20,7 @@ function ProfilePage() {
   const [isFriendAdded, setIsFriendAdded] = useState(false);
   const [friendRequestRemoved, setFriendRequestRemoved] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isFriend, setIsFriend] = useState(false);
 
   // Function to add friend button
   const addFriend = () => {
@@ -49,6 +50,13 @@ function ProfilePage() {
         if (response.data.profileUser.friendRequests.includes(user.user._id)) {
           setIsFriendAdded(true);
         }
+        if(response.data.profileUser.friends){
+        response.data.profileUser.friends.map((friend)=>{
+          if (friend._id === user.user._id){
+            setIsFriend(true);
+          }
+        })}
+        
         setLoading(false);
       })
       .catch((error) => console.log(error));
@@ -101,15 +109,14 @@ function ProfilePage() {
     }
   }, [friendRequestRemoved]);
 
-  console.log(profileUser.samples)
-
+  console.log(isFriend)
   return (
     <div style={{ paddingTop: "72px" }}>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div>
-          {!isFriendAdded ? (
+        <div>{!isFriend ? (
+          !isFriendAdded ? (
             <Button
               variant="contained"
               color="error"
@@ -127,6 +134,15 @@ function ProfilePage() {
             >
               Remove friend request
             </Button>
+          )) : (
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<PersonAddIcon />}
+              onClick={sendMessage}
+            >
+              Send Message
+            </Button>
           )}
           <h1>
             Artist {profileUser.firstName} {profileUser.lastName} profile
@@ -134,25 +150,21 @@ function ProfilePage() {
           <img src={profileUser.img} alt="Profile pic" width="100px" />
           <h4>Username: {profileUser.username}</h4>
           <h4>From: {profileUser.country}</h4>
-          {profileUser.samples && 
-          profileUser.samples.map((sample)=>(
-            <div key={sample._id}>
-            <p>{sample.name}</p>
-            <audio controls>
-            <source src={sample.audio} type="audio/mpeg"/>
-          </audio>
-          </div>
-          ))
-}
+          {profileUser.samples &&
+            profileUser.samples.map((sample) => (
+              <div key={sample._id}>
+                <p>{sample.name}</p>
+                <audio controls>
+                  <source src={sample.audio} type="audio/mpeg" />
+                </audio>
+              </div>
+            ))}
+          {authorization && <Link to={`/profile/edit`}> Edit profile</Link>}
           {authorization && (
-            <Link to={`/profile/edit`}> Edit profile</Link>
-            )}
-          {authorization && (  
             <Link to={`/profile/${userId}/samples`}>Upload Sample</Link>
-            )}
+          )}
         </div>
       )}
-      
     </div>
   );
 }
