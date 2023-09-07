@@ -466,7 +466,8 @@ console.log(user)
                 }}
                 sx={{ bgcolor: "transparent", msOverflowY: "scroll" }}
               >
-                {user &&
+                {user && user.friendRequests.length===0? "No friendrequests" :
+                
                   user.friendRequests.map((friend) => (
                     <div key={friend._id}>
                       <Card

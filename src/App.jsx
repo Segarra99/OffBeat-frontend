@@ -29,9 +29,14 @@ function App() {
             </IsPrivate>
           } 
         />
-        <Route path="/feed/:postId" element={<PostDetails />} />
+        <Route 
+        path="/feed/:postId" 
+        element={
+        <PostDetails />
+        } />
+        
         <Route
-          path="/feed"
+          path="/signup"
           element={
             <IsAnon>
               <SignupPage />
