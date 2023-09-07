@@ -229,7 +229,6 @@ function Feed() {
                   </CardActions>
                   <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                      
                       {comments.map((comment) => (
                           <div key={comment._id}>
                             <Card sx={{ width: 900, mb: 20}}>
@@ -249,7 +248,7 @@ function Feed() {
                                 </button>
                             </Card>
                           </div>
-                        ))}
+                        )) }
                       
                     </CardContent>
                   </Collapse>
