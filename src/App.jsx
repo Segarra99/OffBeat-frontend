@@ -18,6 +18,7 @@ import BandDetailsPage from "./Pages/BandDetails";
 import PostDetails from "./Pages/PostDetails";
 import CreateSamplePage from "./Pages/CreateSample";
 import CreateSampleBandPage from "./Pages/CreateSampleBand";
+import AboutPage from "./Pages/About";
 
 
 function App() {
@@ -50,6 +51,14 @@ function App() {
           element={
             <IsAnon>
               <LoginPage />
+            </IsAnon>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <IsAnon>
+              <AboutPage />
             </IsAnon>
           }
         />
