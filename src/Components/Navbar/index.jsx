@@ -38,11 +38,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ClearIcon from "@mui/icons-material/Clear";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import CommentIcon from '@mui/icons-material/Comment';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 /* const API_URL = "https://offbeat-backend.onrender.com"; */
-const API_URL = "http://localhost:5005";
+const API_URL = "http://localhost:5005"
 
 const StyledInput = styled(Input)(({ theme }) => ({
   color: "inherit",
@@ -138,10 +137,9 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [anchorElFriends, setAnchorElFriends] = React.useState(null);
-  const [anchorElNotifications, setAnchorElNotifications] =
-    React.useState(null);
-  const [anchorElMessages, setAnchorElMessages] = React.useState(null);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [friendAccepted, setFriendAccepted] = useState(false);
+  const [friendRequestRemoved, setFriendRequestRemoved] = useState(false);
   const [loading, setLoading] = useState(true);
   const storedToken = localStorage.getItem("authToken");
 
@@ -149,59 +147,55 @@ function Navbar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const handleOpenFriends = (event) => {
     setAnchorElFriends(event.currentTarget);
   };
 
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   const handleCloseFriends = () => {
     setAnchorElFriends(null);
-  };
-
-  const handleOpenNotifications = (event) => {
-    setAnchorElNotifications(event.currentTarget);
-  };
-
-  const handleCloseNotifications = () => {
-    setAnchorElNotifications(null);
-  };
-
-  const handleOpenMessages = (event) => {
-    setAnchorElMessages(event.currentTarget);
-  };
-
-  const handleCloseMessages = () => {
-    setAnchorElMessages(null);
   };
 
   const searchBand = () => {
     navigate(`/bands?searched=${searchQuery}`);
   };
 
-  useEffect(() => {
-    setSearchQuery(searchQuery);
-  }, [searchQuery]);
+  useEffect(()=>{
+    setSearchQuery(searchQuery)
+  }, [searchQuery])
 
-  /* useEffect(() => {
-    async function updateUser() {
+  // Function to accept friend requests
+  const acceptFriend = () => {
+    setFriendAccepted(!friendAccepted);
+  };
+
+  // Function to remove friend request button
+  const removeFriendRequest = () => {
+    setFriendRequestRemoved(!friendRequestRemoved);
+    setFriendAccepted(!friendAccepted);
+  };
+
+  
+
+  useEffect(() => {
+    async function updateUser(){
       await tokenUpdate();
       await authenticateUser();
     }
 
-    updateUser();
-  }, []); */
+    updateUser()
+  }, []);
 
   // Accept friend request
   const acceptFriendRequest = async (friendId) => {
@@ -237,37 +231,6 @@ function Navbar() {
     }
   };
 
-  // Go to post and remove comment from postNotifications array
-  const goToComment = async (postId, commentId) =>{
-    try{
-      await axios.put(
-        `${API_URL}/api/notification/${postId}/${commentId}`, {}, {headers: {Authorization: `Bearer ${storedToken}`}}
-      )
-
-      await tokenUpdate();
-      await authenticateUser();
-      navigate(`/feed/post/${postId}`)
-    } catch(error){
-      console.log(error)
-    }
-  }
-
-  // Go to chat page
-  const replyMessage = async (userId) =>{
-    try{
-      await axios.put(
-        `${API_URL}/api/message/${messageId}`, {}, {headers: {Authorization: `Bearer ${storedToken}`}}
-      )
-
-      await tokenUpdate();
-      await authenticateUser();
-      navigate(`/messages/${userId}`)
-    }
-    catch(error){
-      console.log(error);
-    }
-  }
-
   // funtion to call the backend route updateToken that updates the token everytime the user to perform changes
   const tokenUpdate = async () => {
     try {
@@ -279,7 +242,9 @@ function Navbar() {
       console.log(error);
     }
   };
-  console.log(user);
+
+
+
   return (
     <AppBar
       position="fixed"
@@ -447,175 +412,31 @@ function Navbar() {
           </FormGroup>
           {isLoggedIn && (
             <Box sx={{ display: "flex", marginRight: "14px" }}>
-              <Tooltip title="See all notifications">
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
-                onClick={handleOpenNotifications}
               >
-                <Badge
-                  badgeContent={user.postNotifications.length}
-                  color="error"
-                >
+                <Badge badgeContent={4} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              </Tooltip>
-              <Menu
-                anchorEl={anchorElNotifications}
-                open={Boolean(anchorElNotifications)}
-                onClose={handleCloseNotifications}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                sx={{ bgcolor: "transparent", msOverflowY: "scroll" }}
-              >
-                {user && user.postNotifications.length === 0
-                  ? "No notifications"
-                  : user.postNotifications.map((notification) => (
-                      <div key={notification._id}>
-                        <Card
-                          sx={{
-                            width: 200,
-                            mb: 2,
-                            height: "15vh",
-                            width: "35vw",
-                          }}
-                        >
-                          <Box>
-                            <CardMedia
-                              component="img"
-                              height="40"
-                              image={notification.author.img}
-                              alt="artist image"
-                              sx={{
-                                borderRadius: "50%",
-                                width: "60px",
-                                height: "60px",
-                                margin: 0,
-                                padding: 0,
-                              }}
-                            />
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="p"
-                                component="div"
-                              >
-                                {notification.author.firstName} {notification.author.lastName} commented: "{notification.content}"
-                              </Typography>
-                              <div>
-                                <Button
-                                  variant="contained"
-                                  color="error"
-                                  startIcon={<CommentIcon />}
-                                  onClick={()=> goToComment(notification.post, notification._id)}
-                                >
-                                  Go to post
-                                </Button>
-                              </div>
-                            </CardContent>
-                          </Box>
-                        </Card>
-                      </div>
-                    ))}
-                    </Menu>
             </Box>
           )}
           {isLoggedIn && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                marginRight: "14px",
-              }}
-            >
-              <Tooltip title="See all messages">
+            <Box sx={{ display: "flex", marginRight: "14px" }}>
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
-                onClick={handleOpenMessages}
               >
-                <Badge badgeContent={user.messages.length} color="error">
+                <Badge badgeContent={4} color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>
-              </Tooltip>
-              <Menu
-                anchorEl={anchorElMessages}
-                open={Boolean(anchorElMessages)}
-                onClose={handleCloseMessages}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                sx={{ bgcolor: "transparent", msOverflowY: "scroll" }}
-              >
-                {user && user.messages.length === 0
-                  ? "No new messages"
-                  : user.messages.map((message) => (
-                      <div key={message._id}>
-                        <Card
-                          sx={{
-                            width: 200,
-                            mb: 2,
-                            height: "15vh",
-                            width: "35vw",
-                          }}
-                        >
-                          <Box>
-                            <CardMedia
-                              component="img"
-                              height="40"
-                              image={message.sender.img}
-                              alt="artist image"
-                              sx={{
-                                borderRadius: "50%",
-                                width: "60px",
-                                height: "60px",
-                                margin: 0,
-                                padding: 0,
-                              }}
-                            />
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="p"
-                                component="div"
-                              >
-                                {message.sender.firstName} {message.sender.lastName}: {message.content}
-                              </Typography>
-                              <div>
-                                <Button
-                                  variant="contained"
-                                  color="error"
-                                  startIcon={<PersonAddIcon />}
-                                  onClick={() =>
-                                    replyMessage(message.sender._id)
-                                  }
-                                >
-                                  Reply
-                                </Button>
-                              </div>
-                            </CardContent>
-                          </Box>
-                        </Card>
-                      </div>
-                    ))}
-              </Menu>
             </Box>
           )}
+
           {isLoggedIn && (
             <Box
               sx={{
@@ -653,67 +474,63 @@ function Navbar() {
                 }}
                 sx={{ bgcolor: "transparent", msOverflowY: "scroll" }}
               >
-                {user && user.friendRequests.length === 0
-                  ? "No friend requests"
-                  : user.friendRequests.map((friend) => (
-                      <div key={friend._id}>
-                        <Card
-                          sx={{
-                            width: 200,
-                            mb: 2,
-                            height: "15vh",
-                            width: "35vw",
-                          }}
-                        >
-                          <Box>
-                            <CardMedia
-                              component="img"
-                              height="40"
-                              image={friend.img}
-                              alt="artist image"
-                              sx={{
-                                borderRadius: "50%",
-                                width: "60px",
-                                height: "60px",
-                                margin: 0,
-                                padding: 0,
-                              }}
-                            />
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="p"
-                                component="div"
+                {user && user.friendRequests.length===0? "No friendrequests" :
+                
+                  user.friendRequests.map((friend) => (
+                    <div key={friend._id}>
+                      <Card
+                        sx={{
+                          width: 200,
+                          mb: 2,
+                          height: "15vh",
+                          width: "35vw",
+                        }}
+                      >
+                        <Box>
+                          <CardMedia
+                            component="img"
+                            height="40"
+                            image={friend.img}
+                            alt="artist image"
+                            sx={{
+                              borderRadius: "50%",
+                              width: "60px",
+                              height: "60px",
+                              margin: 0,
+                              padding: 0,
+                            }}
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="p"
+                              component="div"
+                            >
+                              {friend.firstName} {friend.lastName}
+                            </Typography>
+                            <div>
+                              <Button
+                                variant="contained"
+                                color="error"
+                                startIcon={<PersonAddIcon />}
+                                onClick={() => acceptFriendRequest(friend._id)}
                               >
-                                {friend.firstName} {friend.lastName}
-                              </Typography>
-                              <div>
-                                <Button
-                                  variant="contained"
-                                  color="error"
-                                  startIcon={<PersonAddIcon />}
-                                  onClick={() =>
-                                    acceptFriendRequest(friend._id)
-                                  }
-                                >
-                                  Accept
-                                </Button>
-                                <Button
-                                  variant="outlined"
-                                  color="error"
-                                  startIcon={<ClearIcon />}
-                                  onClick={() =>
-                                    declineFriendRequest(friend._id)
-                                  }
-                                >
-                                  Decline
-                                </Button>
-                              </div>
-                            </CardContent>
-                          </Box>
-                        </Card>
-                      </div>
-                    ))}
+                                Accept
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                color="error"
+                                startIcon={<ClearIcon />}
+                                onClick={() => declineFriendRequest(friend._id)}
+                              >
+                                Decline
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Box>
+                      </Card>
+                    </div>
+                  ))}
               </Menu>
             </Box>
           )}

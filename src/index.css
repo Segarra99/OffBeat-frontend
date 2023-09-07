@@ -179,3 +179,7 @@ h1 {
   border-radius: 20px;
 
 }
+
+.postsBg{
+  background-color: (255, 255, 255, 0.75);
+}
