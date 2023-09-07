@@ -138,6 +138,7 @@ function Feed() {
       });
   };
 
+
   return (
 
     <div className="list" style={{ paddingTop: "72px" }}>
@@ -183,6 +184,7 @@ function Feed() {
             Post
           </button>
         </form>
+        <div className="postsBg">
         {posts.map((post) => (
           <div key={post._id}>
             <Card sx={{ width: 900, mb: 20 }}>
@@ -199,6 +201,9 @@ function Feed() {
                 Created in {new Date(post.createdAt).toLocaleDateString()} by{" "}
                 {post.author.firstName} {post.author.lastName}
               </CardContent>
+              <Link to={`/feed/${post._id}`}>
+                See more
+              </Link>
               {post.author._id === user._id && (
                 <button
                   type="submit"
@@ -250,6 +255,7 @@ function Feed() {
             </Card>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
