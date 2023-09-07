@@ -112,20 +112,12 @@ function Feed() {
       });
   }; 
 
-  /* Get comments */
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/feed/comments`)
-      .then((response) => setComments(response.data))
-      .catch((error) => console.log(error));
-  }, []);
-  console.log(comments)
 
   // Handle Comment Submit Function
   const handleCommentSubmit = (e, postId) => {
     e.preventDefault();
     setPost(postId)
-    const requestBody = { content, author, post};
+    const requestBody = { content, author, post: postId};
 
     console.log(requestBody);
 
@@ -140,7 +132,7 @@ function Feed() {
   }
 
   const deleteComment = (commentId) => {
-    setComments((prevComment) => prevComment.filter((comment) => comment._id !== commentId));
+    /* setPosts((prevPosts) => prevPosts.comments.filter((comment) => comment._id !== commentId)); */
     axios
       .delete(`${API_URL}/api/feed/${commentId}`)
       .then((response) => {
@@ -229,7 +221,7 @@ function Feed() {
                   </CardActions>
                   <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                      {comments.map((comment) => (
+                      {post.comments.map((comment) => (
                           <div key={comment._id}>
                             <Card sx={{ width: 900, mb: 20}}>
                                 <CardContent>
