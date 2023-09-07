@@ -32,6 +32,7 @@ function Feed() {
   const [uploading, setUploading] = useState(false);
   const [comments, setComments] = useState([]);
 
+  
   const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
@@ -138,6 +139,7 @@ function Feed() {
   };
 
   return (
+
     <div className="list" style={{ paddingTop: "72px" }}>
       <div className="postForms">
         <form action="submit" method="POST">
