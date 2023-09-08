@@ -250,7 +250,6 @@ function ProfilePage() {
           {profileUser.samples &&
             profileUser.samples.map((sample) => (
               <div key={sample._id}>
-                <p>Sample name: {sample.name}</p>
                 <audio controls>
                   <source src={sample.audio} type="audio/mpeg" />
                 </audio>

@@ -70,7 +70,7 @@ function CreateSamplePage() {
     uploadData.append("audio", e.target.files[0]);
 
     axios
-      .post(`${API_URL}/api/upload/sample`, uploadData)
+      .post(`${API_URL}/api/samples`, uploadData)
       .then((response) => {
         setAudio(response.data.fileUrl);
         console.log(response);
