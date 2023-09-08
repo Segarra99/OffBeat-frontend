@@ -225,7 +225,7 @@ function BandList(props) {
             </div>
           ))}
         </div>
-           <Button sx={{mt: 5}} component={Link} to="/bands/create" variant="contained" startIcon={<Diversity3Icon />}>
+           <Button component={Link} to="/bands/create" variant="contained" startIcon={<Diversity3Icon />}>
             Form a band
         </Button>
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Link } from 'react-router-dom';
 
 //import mui
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,7 +15,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import BasicInfo from './basicInfo';
 import ProfileInfo from './profileInfo';
