@@ -39,7 +39,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ClearIcon from "@mui/icons-material/Clear";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import CommentIcon from '@mui/icons-material/Comment';
+import CommentIcon from "@mui/icons-material/Comment";
+import TextField from "@mui/material/TextField";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 
 /* const API_URL = "https://offbeat-backend.onrender.com"; */
 const API_URL = "http://localhost:5005";
@@ -144,6 +147,29 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [loading, setLoading] = useState(true);
   const storedToken = localStorage.getItem("authToken");
+  const [hiddenMessage, setHiddenMessage] = useState(true);
+  const [content, setContent] = useState("");
+
+  const handleSendMessage = (e, userId) => {
+    e.preventDefault();
+
+    const requestBody = { content };
+
+    axios
+      .post(`${API_URL}/api/message/${userId}/create`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
+      .then(() => {
+        console.log("Message sent successfully");
+        setContent("");
+        setHiddenMessage(true);
+        tokenUpdate();
+        authenticateUser();
+      })
+      .catch((error) => console.log(error));
+  };
 
   /* Menu openings and closing */
   const handleOpenNavMenu = (event) => {
@@ -238,35 +264,38 @@ function Navbar() {
   };
 
   // Go to post and remove comment from postNotifications array
-  const goToComment = async (postId, commentId) =>{
-    try{
+  const goToComment = async (postId, commentId) => {
+    try {
       await axios.put(
-        `${API_URL}/api/notification/${postId}/${commentId}`, {}, {headers: {Authorization: `Bearer ${storedToken}`}}
-      )
+        `${API_URL}/api/notification/${postId}/${commentId}`,
+        {},
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      );
 
       await tokenUpdate();
       await authenticateUser();
-      navigate(`/feed/post/${postId}`)
-    } catch(error){
-      console.log(error)
-    }
-  }
-
-  // Go to chat page
-  const replyMessage = async (userId) =>{
-    try{
-      await axios.put(
-        `${API_URL}/api/message/${messageId}`, {}, {headers: {Authorization: `Bearer ${storedToken}`}}
-      )
-
-      await tokenUpdate();
-      await authenticateUser();
-      navigate(`/messages/${userId}`)
-    }
-    catch(error){
+      navigate(`/feed/post/${postId}`);
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  // Go to chat page
+  const replyMessage = async (userId) => {
+    try {
+      await axios.put(
+        `${API_URL}/api/message/${messageId}`,
+        {},
+        { headers: { Authorization: `Bearer ${storedToken}` } }
+      );
+
+      await tokenUpdate();
+      await authenticateUser();
+      navigate(`/messages/${userId}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // funtion to call the backend route updateToken that updates the token everytime the user to perform changes
   const tokenUpdate = async () => {
@@ -279,7 +308,7 @@ function Navbar() {
       console.log(error);
     }
   };
-  console.log(user);
+  console.log(hiddenMessage);
   return (
     <AppBar
       position="fixed"
@@ -448,19 +477,19 @@ function Navbar() {
           {isLoggedIn && (
             <Box sx={{ display: "flex", marginRight: "14px" }}>
               <Tooltip title="See all notifications">
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={handleOpenNotifications}
-              >
-                <Badge
-                  badgeContent={user.postNotifications.length}
-                  color="error"
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={handleOpenNotifications}
                 >
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+                  <Badge
+                    badgeContent={user.postNotifications.length}
+                    color="error"
+                  >
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
               </Tooltip>
               <Menu
                 anchorEl={anchorElNotifications}
@@ -508,14 +537,21 @@ function Navbar() {
                                 variant="p"
                                 component="div"
                               >
-                                {notification.author.firstName} {notification.author.lastName} commented: "{notification.content}"
+                                {notification.author.firstName}{" "}
+                                {notification.author.lastName} commented: "
+                                {notification.content}"
                               </Typography>
                               <div>
                                 <Button
                                   variant="contained"
                                   color="error"
                                   startIcon={<CommentIcon />}
-                                  onClick={()=> goToComment(notification.post, notification._id)}
+                                  onClick={() =>
+                                    goToComment(
+                                      notification.post,
+                                      notification._id
+                                    )
+                                  }
                                 >
                                   Go to post
                                 </Button>
@@ -525,7 +561,7 @@ function Navbar() {
                         </Card>
                       </div>
                     ))}
-                    </Menu>
+              </Menu>
             </Box>
           )}
           {isLoggedIn && (
@@ -537,16 +573,16 @@ function Navbar() {
               }}
             >
               <Tooltip title="See all messages">
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-                onClick={handleOpenMessages}
-              >
-                <Badge badgeContent={user.messages.length} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  onClick={handleOpenMessages}
+                >
+                  <Badge badgeContent={user.messages.length} color="error">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
               </Tooltip>
               <Menu
                 anchorEl={anchorElMessages}
@@ -570,7 +606,7 @@ function Navbar() {
                           sx={{
                             width: 200,
                             mb: 2,
-                            height: "15vh",
+                            height: "55vh",
                             width: "35vw",
                           }}
                         >
@@ -594,20 +630,78 @@ function Navbar() {
                                 variant="p"
                                 component="div"
                               >
-                                {message.sender.firstName} {message.sender.lastName}: {message.content}
+                                {message.sender.firstName}{" "}
+                                {message.sender.lastName}: {message.content}
                               </Typography>
+                              {hiddenMessage && (
                               <div>
                                 <Button
                                   variant="contained"
                                   color="error"
                                   startIcon={<PersonAddIcon />}
-                                  onClick={() =>
-                                    replyMessage(message.sender._id)
-                                  }
+                                  onClick={() => setHiddenMessage(false)}
                                 >
                                   Reply
                                 </Button>
                               </div>
+                              )}
+                              <form
+                                onSubmit={(e) =>
+                                  handleSendMessage(e, message._id)
+                                }
+                              >
+                                {!hiddenMessage && (
+                                  <div>
+                                    <TextField
+                                      id="outlined-multiline-static"
+                                      label=""
+                                      color="primary"
+                                      multiline
+                                      rows={9}
+                                      name="content"
+                                      value={content}
+                                      onChange={(e) =>
+                                        setContent(e.target.value)
+                                      }
+                                      sx={{
+                                        bgcolor: "rgba(255,255,255,.6)",
+                                        borderRadius: "5px",
+                                        width: "500px",
+                                      }}
+                                    />
+
+                                    {
+                                      <Stack
+                                        direction="row"
+                                        spacing={6.6}
+                                        sx={{ marginTop: "8px" }}
+                                      >
+                                        <Button
+                                          onClick={() => {
+                                            setContent("");
+                                            setHiddenMessage(true);
+                                          }}
+                                          variant="outlined"
+                                          sx={{
+                                            bgcolor: "rgba(255,255,255,.6)",
+                                            borderRadius: "5px",
+                                          }}
+                                          startIcon={<DeleteIcon />}
+                                        >
+                                          Cancel
+                                        </Button>
+                                        <Button
+                                          variant="contained"
+                                          endIcon={<SendIcon />}
+                                          onClick={(e)=>{handleSendMessage(e, message.sender._id)}}
+                                        >
+                                          Send
+                                        </Button>
+                                      </Stack>
+                                    }
+                                  </div>
+                                )}
+                              </form>
                             </CardContent>
                           </Box>
                         </Card>
