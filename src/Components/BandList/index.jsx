@@ -19,7 +19,10 @@ import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import PersonIcon from '@mui/icons-material/Person';
+import Button from '@mui/material/Button';
+
 
 const API_URL = "http://localhost:5005";
 
@@ -134,18 +137,25 @@ function BandList(props) {
 
   return (
     <div className="list-container" style={{ paddingTop: "72px" }}>
+        <div className="switcher">
+        <Diversity3Icon/>
       <FormGroup>
         <FormControlLabel
           control={
-            <Switch checked={isListSwitched} onChange={handleSwitchChange} />
+            <Switch sx={{ mr: "18px"}} checked={isListSwitched} onChange={handleSwitchChange} />
           }
-          label="Switch List"
           labelPlacement="start"
         />
       </FormGroup>
-      <Link to="/bands/create">Form a Band</Link>
+        <PersonIcon/>
+        </div>
+       
       {isListSwitched ? (
-        <List sx={{ width: "100%", maxWidth: 360 }}>
+        <List sx={{ width: "100%", maxHeight: "80vh"}}>
+          <div  className="listsHeader">
+            <h1>Artists List</h1>
+          </div>
+          <div className="artistsCenter">
           <div className="list-artists">
             {filteredArtists.map((artist) => (
               <div key={artist._id}>
@@ -154,11 +164,7 @@ function BandList(props) {
                   href={`/profile/${artist._id}`}
                   alignItems="flex-start"
                 >
-                  <Divider
-                    variant="inset"
-                    component="li"
-                    sx={{ bgcolor: "white" }}
-                  />
+                  
                   <ListItemAvatar>
                     <Avatar
                       alt="Avatar"
@@ -167,7 +173,7 @@ function BandList(props) {
                     />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={`${artist.firstName} ${artist.lastName}`}
+                    primary={`${artist.firstName} ${artist.lastName} | ${artist.country} | ${artist.genres[0]}`}
                     secondary={
                       <React.Fragment>
                         <Typography
@@ -186,20 +192,19 @@ function BandList(props) {
                     }
                   />
                 </ListItemButton>
-                <Divider
-                  variant="inset"
-                  component="li"
-                  sx={{ bgcolor: "white" }}
-                />
+
               </div>
             ))}
           </div>
+          </div>
         </List>
       ) : (
-        <div className="list">
+        <div className="listsHeader">
+          <h1>Bands List</h1>
+          <div className="list">
           {filteredBands.map((band) => (
             <div key={band._id}>
-              <Card sx={{ width: 450, height:450, mb: 20 }}>
+              <Card sx={{ width: 450, height:450, m: 4, mb:2.5}}>
                 <CardActionArea component={Link} to={`/bands/${band._id}`}>
                   <CardMedia
                     component="img"
@@ -220,6 +225,10 @@ function BandList(props) {
             </div>
           ))}
         </div>
+           <Button sx={{mt: 5}} component={Link} to="/bands/create" variant="contained" startIcon={<Diversity3Icon />}>
+            Form a band
+        </Button>
+      </div>
       )}
     </div>
   );
