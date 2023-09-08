@@ -171,6 +171,25 @@ function Navbar() {
       .catch((error) => console.log(error));
   };
 
+  const handleDeleteMessage = (e, messageId) => {
+    e.preventDefault();
+
+    axios
+      .put(`${API_URL}/api/message/${messageId}`, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
+      .then(() => {
+        console.log("Message deleted successfully");
+        setContent("");
+        setHiddenMessage(true);
+        tokenUpdate();
+        authenticateUser();
+      })
+      .catch((error) => console.log(error));
+  };
+
   /* Menu openings and closing */
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -642,6 +661,14 @@ function Navbar() {
                                   onClick={() => setHiddenMessage(false)}
                                 >
                                   Reply
+                                </Button>
+                                <Button
+                                  variant="contained"
+                                  color="error"
+                                  startIcon={<PersonAddIcon />}
+                                  onClick={(e) => handleDeleteMessage(e, message._id)}
+                                >
+                                  Delete
                                 </Button>
                               </div>
                               )}
