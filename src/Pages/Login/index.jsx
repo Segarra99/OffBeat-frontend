@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/auth.context";
 
-const API_URL = 'http://localhost:5005';
+const API_URL = 'https://offbeat-backend.onrender.com';
 
 
 import Avatar from '@mui/material/Avatar';
@@ -26,7 +26,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
       OffBeat WebApp
       </Link>{' '}
       {new Date().getFullYear()}
@@ -154,7 +154,7 @@ function LoginPage() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link href="/signup" variant="body2">
+                  <Link to="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

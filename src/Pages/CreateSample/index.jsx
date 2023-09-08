@@ -36,7 +36,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -47,7 +47,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 function CreateSamplePage() {
   const [name, setName] = useState("");

@@ -44,8 +44,8 @@ import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 
-/* const API_URL = "https://offbeat-backend.onrender.com"; */
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
+
 
 const StyledInput = styled(Input)(({ theme }) => ({
   color: "inherit",
@@ -333,8 +333,8 @@ function Navbar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -414,8 +414,8 @@ function Navbar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/auth.context";
 
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 //Import Materials UI
 import Card from "@mui/material/Card";

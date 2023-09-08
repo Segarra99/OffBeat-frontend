@@ -15,7 +15,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 function BandDetailsPage() {
   const [band, setBand] = useState({});

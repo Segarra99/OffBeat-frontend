@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Context/auth.context";
 import { useParams } from "react-router-dom";
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 //Import MUI
 import Avatar from "@mui/material/Avatar";
@@ -42,7 +42,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}

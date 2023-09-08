@@ -25,7 +25,7 @@ import {OutlinedInput, InputLabel, MenuItem, Select, FormControl } from "@mui/ma
 import Grid from '@mui/material/Grid';
 
 
-const API_URL = 'http://localhost:5005';
+const API_URL = 'https://offbeat-backend.onrender.com';
 
 const defaultTheme = createTheme();
 
@@ -67,7 +67,7 @@ function SignupPage() {
     return (
       <Typography variant="body2" color="text.secondary" align="center">
         {'Copyright © '}
-        <Link color="inherit" href="https://mui.com/">
+        <Link color="inherit" to="https://mui.com/">
           OffBeat WebApp
         </Link>{' '}
         {new Date().getFullYear()}
@@ -189,7 +189,7 @@ function SignupPage() {
           )} 
           <Grid container>
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link to="/login" variant="body2">
                 {"Already with us? Login"}
               </Link>
             </Grid>

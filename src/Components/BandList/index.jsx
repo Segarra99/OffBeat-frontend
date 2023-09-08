@@ -24,7 +24,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Button from '@mui/material/Button';
 
 
-const API_URL = "http://localhost:5005";
+const API_URL = "https://offbeat-backend.onrender.com";
 
 function BandList(props) {
   const [bands, setBands] = useState([]);
@@ -160,8 +160,8 @@ function BandList(props) {
             {filteredArtists.map((artist) => (
               <div key={artist._id}>
                 <ListItemButton
-                  component="a"
-                  href={`/profile/${artist._id}`}
+                  component={Link}
+                  to={`/profile/${artist._id}`}
                   alignItems="flex-start"
                 >
                   
