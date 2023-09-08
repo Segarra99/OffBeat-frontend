@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../Context/auth.context";
@@ -22,40 +22,39 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
 function PostDetails() {
-    const [post, setPost] = useState(null)
-    const user = useContext(AuthContext);
+    const [post, setPost] = useState("")
+    const {user} = useContext(AuthContext);
     const [currentUser, setCurrentUser] = useState({})
     const [authorization, setAuthorization] = useState(false);
     const [uploading, setUploading] = useState(false);
     const { postId } = useParams();
     const [loading, setLoading] = useState(true); 
 
+    useEffect(() => {
+      // Assuming you have storedToken available
+      axios.get(`${API_URL}/api/feed/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
+      .then((response) => {
+        setPost(response.data);
+        console.log("oh yes: ", post)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }, [postId, storedToken]); // Add postId and storedToken to the dependency array
 
     useEffect(() => {
       setCurrentUser(user)
       setAuthorization(true)
     }, [])
 
-    useEffect(() => {
-        axios.get(`${API_URL}/api/feed/${postId}`)
-        .then((response) => {
-          console.log(response)
-
-            setPost(response.data)
-            
-            setLoading(false)
-            
-        })
-        .catch((error) => console.log(error))
-    }, [] )
-
-
-    
-
-    /* //function to handle likes
+    //function to handle likes
     const triggerLike = () => {
       axios
-        .post(`${API_URL}/api/feed/${postId}/like`, "", {
+        .post(`${API_URL}/api/feed/${postId}/like`, {}, {
           headers: { Authorization: `Bearer ${storedToken}` },
         })
         .then(() => {
@@ -70,11 +69,11 @@ function PostDetails() {
         .catch((error) => {
           console.log(error);
         });
-    }; */
+    };
 
   return (
     <div>
-      {!loading && (
+      {loading && (
     <div style={{ paddingTop: '72px' }}>
       
        <h1>PostDetails</h1>
