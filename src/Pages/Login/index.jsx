@@ -69,7 +69,7 @@ function LoginPage() {
       })
   }
 
-  let picsArr = [
+  /* let picsArr = [
     'https://www.pearsonsarmswhitstable.co.uk/assets/img/israel-palacio-459693-1920x1080.jpg',
     'https://media.istockphoto.com/id/1179435850/photo/microphone-microphone-close-up-a-pub-bar-a-restaurant-classical-music-music.jpg?s=612x612&w=0&k=20&c=f74-R0k-QqDMai-Iu7jgyV_MA-Dmxoa9Mtvcg-VlZLs=',
     'https://c1.wallpaperflare.com/preview/569/78/476/bagpipe-scotland-edinburgh-playing-the-bagpipes.jpg',
@@ -83,7 +83,7 @@ function LoginPage() {
     'https://www.vrtxmag.com/site/assets/files/222242/donny_benet-122.jpg'
   ];
 
-  const randomLoginPic = picsArr[Math.floor(Math.random()*picsArr.length-1)];
+  const randomLoginPic = picsArr[Math.floor(Math.random()*picsArr.length-1)] */;
 
   return (
     <div className="login-container" style={{ paddingTop: "72px" }}>
@@ -97,7 +97,7 @@ function LoginPage() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: `url(${randomLoginPic})`,
+            backgroundImage: `url(https://free4kwallpapers.com/uploads/originals/2015/08/11/guitar.jpg)`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],

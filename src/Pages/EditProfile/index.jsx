@@ -65,21 +65,13 @@ function EditProfilePage() {
   const [genres, setGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState(undefined);
   const navigate = useNavigate();
+  const storedToken = localStorage.getItem("authToken");
+  const { user } = useContext(AuthContext);
 
-  const { userId } = useParams();
-
-  const genreEx = ["rock", "jazz", "blues", "reggae"];
-  const instrumentsEx = [
-    "acoustic guitar",
-    "electric guitar",
-    "bass",
-    "drums",
-    "djembe",
-    "piano",
-    "xylophone",
-    "triangle",
-  ];
-
+  console.log(user)
+  const genreEx = ['Rock', 'Jazz', 'Blues', 'Reggae', 'Pop', 'R&b', 'Classical', 'EDM', 'Rap', 'Techno']
+  const instrumentsEx = ['Guitar', 'Bass', 'Drums', 'Violin', 'Piano', 'Xylophone', 'Triangle', 'Voice', 'Bagpipes', 'flute']
+  
   const handleImageChange = (e) => {
     setUploading(true);
 
@@ -110,9 +102,13 @@ function EditProfilePage() {
       description,
       instruments,
     };
-    console.log(user)
+
     axios
-      .post(`${API_URL}/api/profile/${userId}/edit`, requestBody)
+      .put(`${API_URL}/api/profile/${user._id}/edit`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      })
       .then((response) => {
         navigate("/login");
       })
@@ -170,20 +166,6 @@ function EditProfilePage() {
               variant="standard"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              required
-              id="lastName"
-              label="Last Name"
-              type="lastName"
-              name="lastName"
-              fullWidth
-              autoComplete="lastName"
-              variant="standard"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
             />
           </Grid>
           <Grid item xs={12} md={6}>

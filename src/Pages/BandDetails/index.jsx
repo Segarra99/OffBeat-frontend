@@ -178,7 +178,7 @@ function BandDetailsPage() {
             <Link to={`/bands/${bandId}/samples`}>Upload Sample</Link>
             )}
             {band.samples &&
-        band.samples.map((sample)=>(
+              band.samples.map((sample)=>(
             <div key={sample._id}>
             <p>{sample.name}</p>
             <audio controls>
