@@ -165,8 +165,7 @@ function Navbar() {
         console.log("Message sent successfully");
         setContent("");
         setHiddenMessage(true);
-        tokenUpdate();
-        authenticateUser();
+        updateUser()
       })
       .catch((error) => console.log(error));
   };
@@ -239,6 +238,11 @@ function Navbar() {
     setSearchQuery(searchQuery);
   }, [searchQuery]);
 
+  async function updateUser() {
+    await tokenUpdate();
+    await authenticateUser();
+  }
+  
   useEffect(() => {
     async function updateUser() {
       await tokenUpdate();
@@ -299,22 +303,6 @@ function Navbar() {
     }
   };
 
-  // Go to chat page
-  const replyMessage = async (userId) => {
-    try {
-      await axios.put(
-        `${API_URL}/api/message/${messageId}`,
-        {},
-        { headers: { Authorization: `Bearer ${storedToken}` } }
-      );
-
-      await tokenUpdate();
-      await authenticateUser();
-      navigate(`/messages/${userId}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   // funtion to call the backend route updateToken that updates the token everytime the user to perform changes
   const tokenUpdate = async () => {
@@ -666,7 +654,7 @@ function Navbar() {
                                   variant="contained"
                                   color="error"
                                   startIcon={<PersonAddIcon />}
-                                  onClick={(e) => handleDeleteMessage(e, message._id)}
+                                  onClick={(e) => {handleDeleteMessage(e, message._id), updateUser()}}
                                 >
                                   Delete
                                 </Button>
@@ -720,7 +708,7 @@ function Navbar() {
                                         <Button
                                           variant="contained"
                                           endIcon={<SendIcon />}
-                                          onClick={(e)=>{handleSendMessage(e, message.sender._id), handleDeleteMessage(e, message._id)}}
+                                          onClick={(e)=>{handleSendMessage(e, message.sender._id), handleDeleteMessage(e, message._id), updateUser()}}
                                         >
                                           Send
                                         </Button>

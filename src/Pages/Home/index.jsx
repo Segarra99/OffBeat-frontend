@@ -26,6 +26,8 @@ import { FileUploadOutlined } from "@mui/icons-material";
 import SendIcon from '@mui/icons-material/Send';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InfoIcon from '@mui/icons-material/Info';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 
 
 function Feed() {
@@ -38,6 +40,7 @@ function Feed() {
   const { user } = useContext(AuthContext);
   const [uploading, setUploading] = useState(false);
   const [comments, setComments] = useState([]);
+  const storedToken = localStorage.getItem("authToken");
 
   
   const ExpandMore = styled((props) => {
@@ -114,6 +117,23 @@ function Feed() {
         console.log("Error deleting post:", error);
       });
   };
+
+
+  // Like Function
+  const likeSubmit = (e, postId) => {
+    e.preventDefault();
+    setPost(postId);
+    axios.put(`${API_URL}/api/feed/${postId}/like`, {}, {
+      headers: {
+        Authorization: `Bearer ${storedToken}`,
+      }
+    }).then((response)=>{
+      console.log(response.data)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
 
   // Handle Comment Submit Function
   const handleCommentSubmit = (e, postId) => {
@@ -230,6 +250,14 @@ function Feed() {
                         <InfoIcon sx={{ color: "black" }}/>
                       </IconButton>
                     </Link>
+                      <IconButton
+                        type="submit"
+                        onClick={(e) => {
+                          likeSubmit(e, post._id);
+                        }}
+                      >
+                        <FavoriteBorderRoundedIcon sx={{ color: "black" }}/>
+                      </IconButton>
                     {post.author._id === user._id && (
                       <IconButton
                         type="submit"
