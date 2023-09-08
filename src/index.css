@@ -73,12 +73,22 @@ h1 {
 .list {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   overflow: auto;
   width: 100vw;
 }
 
 .feedPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  overflow: auto;
+  width: 100vw;
+}
+
+.bandPage {
   display: flex;
   flex-direction: row;
   justify-content: space-around;

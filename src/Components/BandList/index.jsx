@@ -199,11 +199,11 @@ function BandList(props) {
         <div className="list">
           {filteredBands.map((band) => (
             <div key={band._id}>
-              <Card sx={{ width: 900, mb: 20 }}>
+              <Card sx={{ width: 450, height:450, mb: 20 }}>
                 <CardActionArea component={Link} to={`/bands/${band._id}`}>
                   <CardMedia
                     component="img"
-                    height="500"
+                    height="300"
                     image={band.img}
                     alt="band image"
                   />

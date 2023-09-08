@@ -56,7 +56,7 @@ const missingEx = ["none", "strings", "percussion", "keys", "vocals"];
 
 function CreateBandPage() {
   const [name, setName] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState();
   const [description, setDescription] = useState("");
   const [genres, setGenres] = useState([]);
   const [missing, setMissing] = useState([]);
