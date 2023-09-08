@@ -8,7 +8,6 @@ import Checkbox from '@mui/material/Checkbox';
 
 function ProfileInfo(props) {
   const{username, setUsername, email, setEmail, password, setPassword} = props
-
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

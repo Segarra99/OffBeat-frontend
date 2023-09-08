@@ -72,9 +72,17 @@ h1 {
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  max-height: 800px;
+  overflow: auto;
+  width: 100vw;
+}
+
+.feedPage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   overflow: auto;
   width: 100vw;
 }
@@ -123,6 +131,12 @@ h1 {
   width: 100%;
   justify-content: center;
   align-items: center;
+}
+
+.btnCenter{
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .BtnDiv {
@@ -180,6 +194,102 @@ h1 {
 
 }
 
+.postsContainer {
+  position: relative; /* Create a positioning context for .postsBg */
+  height: 100vh; /* Set a fixed height or adjust as needed */
+  overflow-y: auto; /* Enable vertical scrolling within .postsContainer */
+}
+
 .postsBg{
-  background-color: (255, 255, 255, 0.75);
+  background-color: rgba(0, 0, 0, 0.625);
+  padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: none;
+}
+
+.postsBg form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15px;
+}
+
+
+.formBtns{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-bottom: -150px;
+  z-index: 1;
+  position: absolute; /* Position buttons absolutely within the container */
+  top: 72.5%; /* Adjust the top position as needed to place buttons on top */
+  right: 2.5%;
+} 
+
+.formBtns button{
+  padding: 10px;
+  margin: 10px;
+  z-index: 2;
+}
+
+.formBtns button:hover{
+  color: black;
+}
+
+
+.formContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items to the top */
+  align-items: flex-end; /* Align items to the right */
+  width: 100%; /* Ensure the container spans the full width of its parent */
+  padding-right: 15px; /* Add some spacing to the right */
+  padding-bottom: 15px; /* Add some spacing to the bottom */
+}
+
+.mappedResultsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the content horizontally */
+}
+
+.centeredPost {
+  width: 100%; /* Ensure the elements take the full width of their container */
+  max-width: 900px; /* Adjust as needed */
+  margin-bottom: 20px; /* Add spacing between each mapped element */
+  /* Additional styles for your mapped elements */
+}
+
+.postBtns{
+  width: 130px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding-bottom: -150px;
+  z-index: 1;
+}
+
+.postBtns button{
+  padding: 10px;
+  margin: 10px;
+  z-index: 2;
+}
+
+.postContent{
+  display: flex;
+  flex-direction: column;
+}
+
+.postSets{
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
+
+.postSets span{
+  width: auto;
 }

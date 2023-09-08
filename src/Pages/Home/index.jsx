@@ -20,6 +20,13 @@ import IconButton from "@mui/material/IconButton";
 import { red } from "@mui/material/colors";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import TextField from "@mui/material/TextField";
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import { FileUploadOutlined } from "@mui/icons-material";
+import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InfoIcon from '@mui/icons-material/Info';
+
 
 function Feed() {
   const [posts, setPosts] = useState([]);
@@ -140,25 +147,34 @@ function Feed() {
 
 
   return (
-
     <div className="list" style={{ paddingTop: "72px" }}>
-      <div className="postForms">
-        <form action="submit" method="POST">
-          <p>Share your strings</p>
+      <section className="feedPage">
+
+      <div>
+        <p></p>
+      </div>
+      <div className="postsContainer">
+      <div className="postForms postsBgWrapper">
+      <div className="postsBg">
+        <form action="submit" method="POST" className="formContainer">
           <label htmlFor="content">
-            <textarea
-              cols={90}
-              rows={7}
-              type="text"
-              placeholder="Write here..."
-              name="content"
-              required
-              id="content"
-              autoFocus
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
+          <TextField
+                id="outlined-multiline-static"
+                label="Share your strings"
+                color="primary"
+                multiline
+                rows={9}
+                name="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                sx={{
+                  bgcolor: "rgba(255,255,255,.6)",
+                  borderRadius: "10px",
+                  width: "900px",
+                }}
+              />
           </label>
+          <div className="formBtns">
           <label htmlFor="img">
             <input
               type="file"
@@ -170,51 +186,66 @@ function Feed() {
               autoComplete="img"
               autoFocus
             />
-            <button
+            <IconButton
               htmlFor="img"
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById("img").click();
               }}
             >
-              Select Image
-            </button>
+              <FileUploadOutlined/>
+            </IconButton>
           </label>
-          <button type="submit" variant="contained" onClick={handleSubmit}>
-            Post
-          </button>
+          {uploading ? (
+            <IconButton type="submit" disabled variant="contained" onClick={handleSubmit}>
+            <SendIcon/>
+          </IconButton>
+          ) : (
+          <IconButton type="submit" variant="contained" onClick={handleSubmit}>
+            <SendIcon/>
+          </IconButton>
+          )}
+          </div>
         </form>
-        <div className="postsBg">
+        <div className="mappedResultsContainer">
         {posts.map((post) => (
-          <div key={post._id}>
-            <Card sx={{ width: 900, mb: 20 }}>
+          <div key={post._id} className="centeredPost">
+            <Card sx={{ width: 900, mb: 5, borderRadius: "10px"}}>
               <CardMedia
                 component="img"
                 height="500"
                 image={post.img}
                 alt="Post image"
+                style={{ objectFit: "contain", backgroundColor: "black"}}
               />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
+              <CardContent sx={{padding: "0", paddingLeft: "10px", paddingRight: "10px", }}>
+                <div className="postContent">
+                  <div className="postSets">
+                  <span>Created in {new Date(post.createdAt).toLocaleDateString()} by{" "}
+                  <Link to={`/profile/${post.author._id}`}>{post.author.firstName} {post.author.lastName}</Link></span>
+                  
+                    <div className="postBtns">
+                    <Link to={`/feed/${post._id}`}>
+                      <IconButton>
+                        <InfoIcon sx={{ color: "black" }}/>
+                      </IconButton>
+                    </Link>
+                    {post.author._id === user._id && (
+                      <IconButton
+                        type="submit"
+                        onClick={() => {
+                          deletePost(post._id);
+                        }}
+                      >
+                        <DeleteIcon sx={{ color: "black" }}/>
+                      </IconButton>
+                    )}
+                    </div>
+                  </div>
                   {post.content}
-                </Typography>
-                Created in {new Date(post.createdAt).toLocaleDateString()} by{" "}
-                {post.author.firstName} {post.author.lastName}
+                </div>
               </CardContent>
-              <Link to={`/feed/${post._id}`}>
-                See more
-              </Link>
-              {post.author._id === user._id && (
-                <button
-                  type="submit"
-                  onClick={() => {
-                    deletePost(post._id);
-                  }}
-                >
-                  Delete
-                </button>
-              )}
-              <CardActions disableSpacing>
+              <CardActions disableSpacing sx={{padding: "0"}}>
                 <ExpandMore
                   expand={expanded}
                   onClick={handleExpandClick}
@@ -256,7 +287,13 @@ function Feed() {
           </div>
         ))}
         </div>
+        </div>
       </div>
+      </div>
+      <div>
+        <p></p>
+      </div>      
+      </section>
     </div>
   );
 }

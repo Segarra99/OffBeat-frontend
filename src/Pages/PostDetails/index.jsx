@@ -30,6 +30,12 @@ function PostDetails() {
     const { postId } = useParams();
     const [loading, setLoading] = useState(true); 
 
+
+    useEffect(() => {
+      setCurrentUser(user)
+      setAuthorization(true)
+    }, [])
+
     useEffect(() => {
         axios.get(`${API_URL}/api/feed/${postId}`)
         .then((response) => {
@@ -44,10 +50,7 @@ function PostDetails() {
     }, [] )
 
 
-    useEffect(() => {
-      setCurrentUser(user)
-      setAuthorization(true)
-    }, [])
+    
 
     /* //function to handle likes
     const triggerLike = () => {
@@ -71,7 +74,7 @@ function PostDetails() {
 
   return (
     <div>
-      {loading && (
+      {!loading && (
     <div style={{ paddingTop: '72px' }}>
       
        <h1>PostDetails</h1>

@@ -51,7 +51,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const genreEx = ["rock", "jazz", "blues", "reggae"];
+const genreEx = ['Rock', 'Jazz', 'Blues', 'Reggae', 'Pop', 'R&b', 'Classical', 'EDM', 'Rap', 'Techno']
 const missingEx = ["none", "strings", "percussion", "keys", "vocals"];
 
 function CreateBandPage() {

@@ -29,8 +29,8 @@ const API_URL = 'http://localhost:5005';
 
 const defaultTheme = createTheme();
 
-const genreEx = ['rock', 'jazz', 'blues', 'reggae']
-const instrumentsEx = ['acoustic guitar', 'electric guitar', 'bass', 'drums', 'djembe', 'piano', 'xylophone', 'triangle']
+const genreEx = ['Rock', 'Jazz', 'Blues', 'Reggae', 'Pop', 'R&b', 'Classical', 'EDM', 'Rap', 'Techno']
+const instrumentsEx = ['Guitar', 'Bass', 'Drums', 'Violin', 'Piano', 'Xylophone', 'Triangle', 'Voice', 'Bagpipes', 'flute']
 
 function SignupPage() {
   const [email, setEmail] = useState('');
