@@ -250,7 +250,6 @@ function Feed() {
                         <InfoIcon sx={{ color: "black" }}/>
                       </IconButton>
                     </Link>
-                    
                     {post.likes.includes(user._id) ? (
                       <IconButton
                         type="submit"

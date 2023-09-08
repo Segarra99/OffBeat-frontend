@@ -331,3 +331,13 @@ h1 {
   align-items: center;
   justify-content: center;
 }
+
+.detailContainer{
+  padding-top: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+}
