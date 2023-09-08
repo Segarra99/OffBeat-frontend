@@ -140,7 +140,7 @@ function ProfilePage() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div>
+        <div className="profileCapsule">
           {!isFriend ? (
             !isFriendAdded ? (
               <Button
@@ -224,25 +224,47 @@ function ProfilePage() {
               </form>
             </div>
           )}
+          <div className="profileMain">
+
+          
           <h1>
             Artist {profileUser.firstName} {profileUser.lastName} profile
           </h1>
           <img src={profileUser.img} alt="Profile pic" width="100px" />
-          <h4>Username: {profileUser.username}</h4>
-          <h4>From: {profileUser.country}</h4>
+          <section className="profile">
+          <div className="user">
+            <h4>Username: {profileUser.username}</h4>
+            <h4>From: {profileUser.country}</h4>
+          </div>
+          
+          <div>
+            <h4>About me?</h4>
+            <h4>{profileUser.description}</h4>
+            <h4>I love to play the {profileUser.instruments.map((instrument) => {return `${instrument} `})}, I've been playing it since I was a little kid.</h4>
+            <h4>My preferred genres are {profileUser.genres.map((genre) => {return `${genre} `})}</h4>
+          </div>
+          <br />
+          <hr />
+
+          <h4>Check some of my samples and feel free to connect!</h4>
           {profileUser.samples &&
             profileUser.samples.map((sample) => (
               <div key={sample._id}>
-                <p>{sample.name}</p>
+                <p>Sample name: {sample.name}</p>
                 <audio controls>
                   <source src={sample.audio} type="audio/mpeg" />
                 </audio>
               </div>
             ))}
-          {authorization && <Link to={`/profile/edit`}> Edit profile</Link>}
+            <div className="profActions">
+              {authorization && <Link to={`/profile/${userId}/edit`}> Edit profile</Link>}
           {authorization && (
             <Link to={`/profile/${userId}/samples`}>Upload Sample</Link>
           )}
+            </div>
+          
+          </section>
+        </div>
         </div>
       )}
     </div>

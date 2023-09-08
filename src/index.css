@@ -331,3 +331,57 @@ h1 {
   align-items: center;
   justify-content: center;
 }
+
+
+.contacting{
+  margin-top: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.contacting div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.625);
+}
+
+
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  top: 28.5%;
+  left: 32.5%;
+  align-items: start;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.625);
+}
+
+.user {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.profActions {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.profileMain img {
+  width: 400px;
+
+}
