@@ -29,6 +29,7 @@ function PostDetails() {
     const [uploading, setUploading] = useState(false);
     const { postId } = useParams();
     const [loading, setLoading] = useState(true); 
+    const storedToken = localStorage.getItem("authToken");
 
     useEffect(() => {
       // Assuming you have storedToken available

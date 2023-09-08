@@ -250,6 +250,19 @@ function Feed() {
                         <InfoIcon sx={{ color: "black" }}/>
                       </IconButton>
                     </Link>
+                    
+                    {post.likes.includes(user._id) ? (
+                      <IconButton
+                        type="submit"
+                        onClick={(e) => {
+                          likeSubmit(e, post._id);
+                        }}
+                      >
+                        <FavoriteRoundedIcon sx={{ color: "red" }}/>
+                      </IconButton>
+
+                    ) : (
+
                       <IconButton
                         type="submit"
                         onClick={(e) => {
@@ -258,6 +271,9 @@ function Feed() {
                       >
                         <FavoriteBorderRoundedIcon sx={{ color: "black" }}/>
                       </IconButton>
+                    )}
+
+
                     {post.author._id === user._id && (
                       <IconButton
                         type="submit"
