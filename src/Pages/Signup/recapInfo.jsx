@@ -36,10 +36,10 @@ function RecapInfo(props) {
                   <Typography gutterBottom>Description: {props.description}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography gutterBottom>Instruments: {props.instruments}</Typography>
+                  <Typography gutterBottom>Instruments: {props.instruments.map((instrument) => {return `${instrument} `})}</Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography gutterBottom>Music Genres: {props.genres}</Typography>
+                  <Typography gutterBottom>Music Genres: {props.genres.map((genre) => {return `${genre} `})}</Typography>
                 </Grid>
               </React.Fragment>
           </Grid>
