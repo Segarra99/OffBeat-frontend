@@ -29,8 +29,7 @@ function PostDetails() {
     const [uploading, setUploading] = useState(false);
     const { postId } = useParams();
     const [loading, setLoading] = useState(true); 
-    const storedToken = localStorage.getItem("authToken");
-    
+
     useEffect(() => {
       // Assuming you have storedToken available
       axios.get(`${API_URL}/api/feed/${postId}`, {
@@ -48,21 +47,9 @@ function PostDetails() {
     }, [postId, storedToken]); // Add postId and storedToken to the dependency array
 
     useEffect(() => {
-      const loadingTimeout = setTimeout(() => {
-        setLoading(false);
-      }, 1500);
-  
-      return () => {
-        // Cleanup the timeout when the component unmounts
-        clearTimeout(loadingTimeout);
-      };
-    }, []); 
-
-    useEffect(()=>{
-      if (!loading && post.author._id === user._id) {
-        setAuthorization(true);
-      }
-    }, [!loading])
+      setCurrentUser(user)
+      setAuthorization(true)
+    }, [])
 
     //function to handle likes
     const triggerLike = () => {
@@ -84,38 +71,43 @@ function PostDetails() {
         });
     };
 
-    return (
-      <div style={{ paddingTop: "72px" }}>
-          {!loading && (
-          <div>
-            <h1>PostDetails</h1>
-            <img src={post.img} alt="" width="200px" />
-            <p>{post.content}</p>
-            <div>
-              <button
-                type="submit"
-                onClick={() => {
-                  triggerLike(post._id);
-                }}
-              >
-                <FavoriteBorderIcon/>
-              </button>
+  return (
+    <div>
+      {loading && (
+    <div style={{ paddingTop: '72px' }}>
+      
+       <h1>PostDetails</h1>
+        <img src={post.img} alt="" />
+        <p>{post.content}</p>
+        <div>
+        <button
+            type="submit"
+            onClick={() => {
+              triggerLike(post._id);
+            }}
+          >
+            <FavoriteBorderIcon/>
+          </button>
+        
+          {authorization && post.author._id === currentUser.user._id &&  (
+            <button
+              type="submit"
+              onClick={() => {
+                deletePost(post._id);
+              }}
+            >
+              Delete
+            </button>
+          )}
+
+          
+        </div>
+      
+    </div>
+    )}
+    </div>
     
-              {authorization && (
-                <button
-                  type="submit"
-                  onClick={() => {
-                    deletePost(post._id);
-                  }}
-                >
-                  Delete
-                </button>
-              )}
-            </div>
-          </div>
-        ) }
-      </div>
-    );
+  )
 }
 
 export default PostDetails;

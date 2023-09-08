@@ -34,6 +34,7 @@ function ContactsPage() {
         <br />
         <h1>Contacts</h1>
       </div>
+      <div className="btnCenter">
       <div className="BtnDiv">
         <button className="contactsBtn" onClick={handlePreviousSection}>
           <ArrowBackIosNewIcon />
@@ -41,6 +42,7 @@ function ContactsPage() {
         <button className="contactsBtn" onClick={handleNextSection}>
           <ArrowForwardIosIcon />
         </button>
+      </div>
       </div>
       <div className="insideContacts">
         <section
