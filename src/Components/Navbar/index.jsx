@@ -720,7 +720,7 @@ function Navbar() {
                                         <Button
                                           variant="contained"
                                           endIcon={<SendIcon />}
-                                          onClick={(e)=>{handleSendMessage(e, message.sender._id)}}
+                                          onClick={(e)=>{handleSendMessage(e, message.sender._id), handleDeleteMessage(e, message._id)}}
                                         >
                                           Send
                                         </Button>
