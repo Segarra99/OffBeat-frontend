@@ -134,7 +134,7 @@ function ProfilePage() {
         .catch((error) => console.log(error));
     }
   }, [friendRequestRemoved]);
-
+  console.log(profileUser.samples)
   return (
     <div style={{ paddingTop: "72px" }}>
       {loading ? (
@@ -243,8 +243,7 @@ function ProfilePage() {
             <h4>I love to play the {profileUser.instruments.map((instrument) => {return `${instrument} `})}, I've been playing it since I was a little kid.</h4>
             <h4>My preferred genres are {profileUser.genres.map((genre) => {return `${genre} `})}</h4>
           </div>
-          <br />
-          <hr />
+ 
 
           <h4>Check some of my samples and feel free to connect!</h4>
           {profileUser.samples &&
